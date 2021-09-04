@@ -181,7 +181,7 @@ logger see_logger(std::cout);
 #ifdef CM_DEBUG
 #define see(arg...) cm::impl::see_logger.hint(#arg)(arg)
 #define asee(arg...) cm::impl::see_logger.hint(__FILE__, "magenta").hint(__LINE__, "magenta").hint(#arg)(arg)
-#define cm_assert(val, arg...) cm::impl::see_logger._assert(__FILE__, __LINE__, #val, val, #arg, arg)
+#define cm_assert(val, arg...) cm::impl::see_logger._assert(__FILE__, __LINE__, #val, val, #arg, ##arg)
 #else
 #define see(...)
 #define asee(...)
