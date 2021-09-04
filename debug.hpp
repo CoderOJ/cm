@@ -164,7 +164,8 @@ public:
         .log(c_yellow_bold).log(raw)
         .log(c_yellow).log("` failed")
         .log(c_reset).endl();
-      hint("detail", "magenta").hint(info_str)(info...);
+      if (info_str != "")
+        hint("detail", "magenta").hint(info_str)(info...);
       if (_assert_exit) exit(0);
     }
     return *this;
