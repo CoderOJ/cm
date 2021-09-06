@@ -8,7 +8,7 @@ int main()
   see(sc.next_char());
 
   char dist[64];
-  sc.next(dist);
+  sc.next_token(dist);
   see(dist);
   sc.next_line(dist);
   see(dist);

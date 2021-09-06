@@ -97,7 +97,7 @@ public:
     return next();
   }
 
-  char *next(char *s)
+  char *next_token(char *s)
   {
     while (is_ws(get())) next();
     while (!is_ws(get())) *s++ = next();
