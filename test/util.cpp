@@ -19,4 +19,11 @@ int main()
   cm::once_t once;
   if (once()) see(a += b);
   if (once()) see(a += b);
+
+  std::vector<int> va{1, 2, 3};
+  asee(va);
+  asee(va + 4);
+  asee(va + std::vector<int>{5, 6});
+  asee(va += std::vector<int>{7, 8});
+  asee(va + va);
 }

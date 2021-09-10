@@ -2,6 +2,7 @@
 #define CM_UTIL_H 1
 
 #include <utility>
+#include <vector>
 
 namespace cm
 {
@@ -50,6 +51,44 @@ template <class A, class B> inline __attribute__((always_inline))
 std::pair<A,B>& operator-= (std::pair<A,B> &lhs, const std::pair<A,B> &rhs) 
 {
   lhs.first -= rhs.first; lhs.second -= rhs.second; return lhs; 
+}
+
+template <class T>
+std::vector<T>& operator+= (std::vector<T> &a, const std::vector<T> &b)
+{
+  a.insert(a.end(), b.begin(), b.end());
+  return a;
+}
+template <class T>
+std::vector<T>& operator+= (std::vector<T> &a, const T &b)
+{
+  a.insert(a.end(), b);
+  return a;
+}
+template <class T>
+std::vector<T>& operator+= (std::vector<T> &a, T &&b)
+{
+  a.insert(a.end(), std::forward<T>(b));
+  return a;
+}
+
+template <class T>
+std::vector<T> operator+ (std::vector<T> a, const std::vector<T> &b)
+{
+  a += b;
+  return a;
+}
+template <class T>
+std::vector<T> operator+ (std::vector<T> a, T &b)
+{
+  a += b;
+  return a;
+}
+template <class T>
+std::vector<T> operator+ (std::vector<T> a, T &&b)
+{
+  a += std::forward<T>(b);
+  return a;
 }
 
 #define __AT_INIT(line, Pred) struct CM_INNER_ATINIT##line##_t { \
