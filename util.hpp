@@ -15,7 +15,7 @@ inline bool check_min(T &a, const T &b)
 template <class T>
 inline bool check_max(T &a, const T &b)
 {
-  return b > a ? a = b, 1 : 0;
+  return a < b ? a = b, 1 : 0;
 }
 
 struct once_t
