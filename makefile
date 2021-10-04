@@ -1,5 +1,8 @@
 CXX := clang++ -std=c++17
-CPPFLAGS := -Wall -Wextra -Wconversion -Wno-sign-conversion -g -fsanitize=address,undefined -DCM_DEBUG
+CPPFLAGS += -g -Wall -Wextra -Wconversion -Wno-sign-conversion 
+CPPFLAGS += -fsanitize=address,undefined -fno-sanitize-recover 
+CPPFLAGS += -D_GLIBCXX_ASSERTIONS -D_GLIBCXX_DEBUG_PEDANTIC 
+CPPFLAGS += -DCM_DEBUG
 REMFLAGS := -O2
 
 SRC := $(wildcard *.cpp)
@@ -11,7 +14,7 @@ REM := $(patsubst %.cpp, %_rem, ${SRC})
 all: $(OBJ)
 
 %: %.cpp
-	@$(CXX) $(CPPFLAGS) -o $@ $^
+	$(CXX) $(CPPFLAGS) -o $@ $^
 
 
 in:
