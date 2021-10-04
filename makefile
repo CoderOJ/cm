@@ -32,5 +32,5 @@ run: in $(RUN)
 remote: $(REM)
 
 
-%_rem: %
-	$(CXX) $(REMFLAGS) -o $^ $^.cpp
+%_rem: %.cpp
+	$(CXX) $(REMFLAGS) -o $(basename $^) $^
