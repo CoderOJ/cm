@@ -1,5 +1,5 @@
 CXX := clang++ -std=c++17
-CPPFLAGS := -Wall -Wextra -Wconversion -g -DCM_DEBUG -fsanitize=address,undefined
+CPPFLAGS := -Wall -Wextra -Wconversion -Wno-sign-conversion -g -DCM_DEBUG -fsanitize=address,undefined
 
 SRC  := $(wildcard *.cpp)
 OBJ  := $(patsubst %.cpp, %, ${SRC})
