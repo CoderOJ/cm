@@ -270,6 +270,8 @@ struct __getmm_ll<type_list_t<>, rhs_mm_list, fitin_pred>
 template <class lhs_t> struct intm_op_neg : public intm_tag
 {
   intm_op_neg() =delete;
+  intm_op_neg(const intm_op_neg&) =default;
+  intm_op_neg(intm_op_neg&&) =default;
   intm_op_neg& operator= (intm_op_neg) =delete;
   intm_op_neg& operator= (intm_op_neg&&) =delete;
   static constexpr int mod = lhs_t::mod;
@@ -292,6 +294,8 @@ template <class lhs_t> struct intm_op_neg : public intm_tag
 template <class lhs_t, class rhs_t> struct intm_op_add : public intm_tag
 {
   intm_op_add() =delete;
+  intm_op_add(const intm_op_add&) =default;
+  intm_op_add(intm_op_add&&) =default;
   intm_op_add& operator= (intm_op_add) =delete;
   intm_op_add& operator= (intm_op_add&&) =delete;
   static_assert(lhs_t::mod == rhs_t::mod, "");
@@ -329,8 +333,8 @@ public:
 template <class lhs_t, class rhs_t> struct intm_op_mul : public intm_tag
 {
   intm_op_mul() =delete;
-  intm_op_mul(const intm_op_mul&) =delete;
-  intm_op_mul(intm_op_mul&&) =delete;
+  intm_op_mul(const intm_op_mul&) =default;
+  intm_op_mul(intm_op_mul&&) =default;
   intm_op_mul& operator= (intm_op_mul) =delete;
   intm_op_mul& operator= (intm_op_mul&&) =delete;
   static_assert(lhs_t::mod == rhs_t::mod, "");
