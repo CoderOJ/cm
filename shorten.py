@@ -29,11 +29,10 @@ def do_file(filename, min_filename):
             print(cur, file=output)
 
     for line in file:
+        line = line.split("//")[0]
         line = line.strip(" \n")
 
         if line == "":
-            continue
-        elif line[0:2] == "//":
             continue
         elif line[0] == "#":
             refresh(cur)
