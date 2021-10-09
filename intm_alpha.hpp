@@ -172,7 +172,7 @@ template <int mod, class input_range> struct mm_nothing : public mod_method<mod>
 };
 template <int mod, class input_range> struct mm_ifsub : public mod_method<mod>
 {
-  static constexpr int cost = 4;
+  static constexpr int cost = 3;
   static constexpr i64 sub_val = (input_range::r() / mod + 1) / 2 * mod;
   using range = range_t<std::max(sub_val - 1, input_range::r() - sub_val)>;
   inline constexpr i64 operator()(i64 a) const
@@ -182,13 +182,24 @@ template <int mod, class input_range> struct mm_ifsub : public mod_method<mod>
 };
 template <int mod, class input_range> struct mm_ifsub2 : public mod_method<mod>
 {
-  static constexpr int cost = 8;
+  static constexpr int cost = 6;
   using range =
       typename mm_ifsub<mod, typename mm_ifsub<mod, input_range>::range>::range;
   inline constexpr i64 operator()(i64 a) const
   {
     return mm_ifsub<mod, typename mm_ifsub<mod, input_range>::range>()(
         mm_ifsub<mod, input_range>()(a));
+  }
+};
+template <int mod, class input_range> struct mm_ifsub3 : public mod_method<mod>
+{
+  static constexpr int cost = 9;
+  using range =
+      typename mm_ifsub<mod, typename mm_ifsub2<mod, input_range>::range>::range;
+  inline constexpr i64 operator()(i64 a) const
+  {
+    return mm_ifsub<mod, typename mm_ifsub2<mod, input_range>::range>()(
+        mm_ifsub2<mod, input_range>()(a));
   }
 };
 template <int mod, class input_range> struct mm_getmod : public mod_method<mod>
