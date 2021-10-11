@@ -80,7 +80,7 @@ public:
   ATTR_INLINE friend std::ostream& operator<< (std::ostream& out, const intm  rhs) { out << rhs.a; return out; }
   ATTR_INLINE friend std::istream& operator>> (std::istream& in,        intm &rhs) { long long a; in >> a; rhs = intm(a); return in; }
 
-  template <class _IntType> ATTR_INLINE CXX14_CONSTEXPR intm pow(_IntType k) const { return __make_intm(__impl_pow(a, k % (MOD-1))); }
+  template <class _IntType> ATTR_INLINE CXX14_CONSTEXPR intm pow(_IntType k) const { return raw(__impl_pow(a, k % (MOD-1))); }
   ATTR_INLINE CXX14_CONSTEXPR intm inv() const 
   { 
 #ifdef CM_DEBUG_H
