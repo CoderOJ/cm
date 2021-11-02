@@ -52,8 +52,9 @@ protected:
   static ATTR_INLINE CXX11_CONSTEXPR INTM_FAST_32
   __impl_dec(INTM_FAST_32 a) { return a >= MOD ? a-MOD : a; }
 
+  template <class IntType>
   static ATTR_INLINE CXX14_CONSTEXPR INTM_FAST_32
-  __impl_pow(INTM_FAST_32 a, INTM_FAST_32 b) {
+  __impl_pow(INTM_FAST_32 a, IntType b) {
     INTM_FAST_32 res = 1; 
     for (; b; b >>= 1) {
       if (b & 1) { res = static_cast<INTM_FAST_32>((INTM_FAST_64)(res) * (INTM_FAST_64)(a) % MOD); }
@@ -80,7 +81,7 @@ public:
   ATTR_INLINE friend std::ostream& operator<< (std::ostream& out, const intm  rhs) { out << rhs.a; return out; }
   ATTR_INLINE friend std::istream& operator>> (std::istream& in,        intm &rhs) { long long a; in >> a; rhs = intm(a); return in; }
 
-  template <class _IntType> ATTR_INLINE CXX14_CONSTEXPR intm pow(_IntType k) const { return raw(__impl_pow(a, k % (MOD-1))); }
+  template <class _IntType> ATTR_INLINE CXX14_CONSTEXPR intm pow(_IntType k) const { return raw(__impl_pow(a, k)); }
   ATTR_INLINE CXX14_CONSTEXPR intm inv() const 
   { 
 #ifdef CM_DEBUG_H
