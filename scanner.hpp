@@ -131,13 +131,14 @@ public:
     return sign * result;
   }
 
-  long long next_modint(long long mod)
+  template <class Integer>
+  Integer next_integer()
   {
-    get_sign();
-    long long result = 0;
+    Integer sign = get_sign();
+    Integer result(0);
     while (isdigit(get()))
-      result = (result * 10 + (next() - '0')) % mod;
-    return result;
+      result = result * Integer(10) + Integer(next() - '0');
+    return sign * result;
   }
 
   double next_double()
