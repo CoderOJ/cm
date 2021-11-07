@@ -7,13 +7,13 @@
 namespace cm
 {
 
-template <class first_t, class second_t> struct intm_pair
+template <class _first_t, class _second_t> struct intm_pair
 {
-  first_t first;
-  second_t second;
+  _first_t first;
+  _second_t second;
 
   intm_pair() = default;
-  intm_pair(first_t first, second_t second) : first(first), second(second)
+  intm_pair(_first_t first, _second_t second) : first(first), second(second)
   {
   }
   template <class IntType, typename = typename std::enable_if<
@@ -22,55 +22,55 @@ template <class first_t, class second_t> struct intm_pair
   {
   }
 
-  auto operator+(const intm_pair &rhs) const
-      -> decltype(make_intm_pair(first + rhs.first, second + rhs.second));
-  auto operator-(const intm_pair &rhs) const
-      -> decltype(make_intm_pair(first - rhs.first, second - rhs.second));
-  auto operator*(const intm_pair &rhs) const
-      -> decltype(make_intm_pair(first * rhs.first, second *rhs.second));
-  auto operator/(const intm_pair &rhs) const
-      -> decltype(make_intm_pair(first / rhs.first, second / rhs.second));
+  auto operator+(const intm_pair &_rhs) const
+      -> decltype(make_intm_pair(first + _rhs.first, second + _rhs.second));
+  auto operator-(const intm_pair &_rhs) const
+      -> decltype(make_intm_pair(first - _rhs.first, second - _rhs.second));
+  auto operator*(const intm_pair &_rhs) const
+      -> decltype(make_intm_pair(first * _rhs.first, second *_rhs.second));
+  auto operator/(const intm_pair &_rhs) const
+      -> decltype(make_intm_pair(first / _rhs.first, second / _rhs.second));
 };
 
-template <class first_t, class second_t>
-intm_pair<first_t, second_t> make_intm_pair(first_t first, second_t second)
+template <class _first_t, class _second_t>
+intm_pair<_first_t, _second_t> make_intm_pair(_first_t first, _second_t second)
 {
-  return intm_pair<first_t, second_t>(first, second);
+  return intm_pair<_first_t, _second_t>(first, second);
 }
 
-template <class first_t, class second_t>
-auto intm_pair<first_t, second_t>::operator+(const intm_pair &rhs) const
-    -> decltype(make_intm_pair(first + rhs.first, second + rhs.second))
+template <class _first_t, class _second_t>
+auto intm_pair<_first_t, _second_t>::operator+(const intm_pair &_rhs) const
+    -> decltype(make_intm_pair(first + _rhs.first, second + _rhs.second))
 {
-  return make_intm_pair(first + rhs.first, second + rhs.second);
+  return make_intm_pair(first + _rhs.first, second + _rhs.second);
 }
 
-template <class first_t, class second_t>
-auto intm_pair<first_t, second_t>::operator-(const intm_pair &rhs) const
-    -> decltype(make_intm_pair(first - rhs.first, second - rhs.second))
+template <class _first_t, class _second_t>
+auto intm_pair<_first_t, _second_t>::operator-(const intm_pair &_rhs) const
+    -> decltype(make_intm_pair(first - _rhs.first, second - _rhs.second))
 {
-  return make_intm_pair(first - rhs.first, second - rhs.second);
+  return make_intm_pair(first - _rhs.first, second - _rhs.second);
 }
 
-template <class first_t, class second_t>
-auto intm_pair<first_t, second_t>::operator*(const intm_pair &rhs) const
-    -> decltype(make_intm_pair(first * rhs.first, second *rhs.second))
+template <class _first_t, class _second_t>
+auto intm_pair<_first_t, _second_t>::operator*(const intm_pair &_rhs) const
+    -> decltype(make_intm_pair(first * _rhs.first, second *_rhs.second))
 {
-  return make_intm_pair(first * rhs.first, second * rhs.second);
+  return make_intm_pair(first * _rhs.first, second * _rhs.second);
 }
 
-template <class first_t, class second_t>
-auto intm_pair<first_t, second_t>::operator/(const intm_pair &rhs) const
-    -> decltype(make_intm_pair(first / rhs.first, second / rhs.second))
+template <class _first_t, class _second_t>
+auto intm_pair<_first_t, _second_t>::operator/(const intm_pair &_rhs) const
+    -> decltype(make_intm_pair(first / _rhs.first, second / _rhs.second))
 {
-  return make_intm_pair(first / rhs.first, second / rhs.second);
+  return make_intm_pair(first / _rhs.first, second / _rhs.second);
 }
 
-template <class first_t, class second_t>
-std::ostream &operator<<(std::ostream &out, intm_pair<first_t, second_t> rhs)
+template <class _first_t, class _second_t>
+std::ostream &operator<<(std::ostream &_out, intm_pair<_first_t, _second_t> _rhs)
 {
-  out << "(" << rhs.first << ", " << rhs.second << ")";
-  return out;
+  _out << "(" << _rhs.first << ", " << _rhs.second << ")";
+  return _out;
 }
 
 } // namespace cm
