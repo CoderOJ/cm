@@ -4,6 +4,12 @@
 #include <utility>
 #include <vector>
 
+#ifdef CM_DEBUG
+#define CONSTRAINT(n, a, b) constexpr auto n = b;
+#else
+#define CONSTRAINT(n, a, b) constexpr auto n = a;
+#endif
+
 namespace cm
 {
 
