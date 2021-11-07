@@ -13,53 +13,53 @@ namespace cm
 class logger
 {
 private:
-  std::ostream *out;
-  std::string sep = "\x2c\x20";
+  std::ostream *_out;
+  std::string _sep = "\x2c\x20";
   bool _assert_exit = true;
   
-  std::string c_red     = "\033[0;31m";
-  std::string c_green   = "\033[0;32m";
-  std::string c_yellow  = "\033[0;33m";
-  std::string c_blue    = "\033[0;34m";
-  std::string c_magenta = "\033[0;35m";
-  std::string c_cyan    = "\033[0;36m";
-  std::string c_red_bold     = "\033[1;31m";
-  std::string c_green_bold   = "\033[1;32m";
-  std::string c_yellow_bold  = "\033[1;33m";
-  std::string c_blue_bold    = "\033[1;34m";
-  std::string c_magenta_bold = "\033[1;35m";
-  std::string c_cyan_bold    = "\033[1;36m";
-  std::string c_reset   = "\033[0m";
+  std::string _c_red     = "\033[0;31m";
+  std::string _c_green   = "\033[0;32m";
+  std::string _c_yellow  = "\033[0;33m";
+  std::string _c_blue    = "\033[0;34m";
+  std::string _c_magenta = "\033[0;35m";
+  std::string _c_cyan    = "\033[0;36m";
+  std::string _c_red_bold     = "\033[1;31m";
+  std::string _c_green_bold   = "\033[1;32m";
+  std::string _c_yellow_bold  = "\033[1;33m";
+  std::string _c_blue_bold    = "\033[1;34m";
+  std::string _c_magenta_bold = "\033[1;35m";
+  std::string _c_cyan_bold    = "\033[1;36m";
+  std::string _c_reset   = "\033[0m";
 
-  std::string get_color(std::string name)
+  std::string _get_color(std::string _name)
   {
-    if (name == "red")     return c_red;
-    if (name == "green")   return c_green;
-    if (name == "yellow")  return c_yellow;
-    if (name == "blue")    return c_blue;
-    if (name == "magenta") return c_magenta;
-    if (name == "cyan")    return c_cyan;
-    if (name == "red bold")     return c_red_bold;
-    if (name == "green bold")   return c_green_bold;
-    if (name == "yellow bold")  return c_yellow_bold;
-    if (name == "blue bold")    return c_blue_bold;
-    if (name == "magenta bold") return c_magenta_bold;
-    if (name == "cyan bold")    return c_cyan_bold;
-    if (name == "reset")   return c_reset;
+    if (_name == "red")     return _c_red;
+    if (_name == "green")   return _c_green;
+    if (_name == "yellow")  return _c_yellow;
+    if (_name == "blue")    return _c_blue;
+    if (_name == "magenta") return _c_magenta;
+    if (_name == "cyan")    return _c_cyan;
+    if (_name == "red bold")     return _c_red_bold;
+    if (_name == "green bold")   return _c_green_bold;
+    if (_name == "yellow bold")  return _c_yellow_bold;
+    if (_name == "blue bold")    return _c_blue_bold;
+    if (_name == "magenta bold") return _c_magenta_bold;
+    if (_name == "cyan bold")    return _c_cyan_bold;
+    if (_name == "reset")   return _c_reset;
     return "";
   }
 
 public:
-  logger(std::ostream &out) : out(&out) {}
+  logger(std::ostream &_out) : _out(&_out) {}
 
-  logger& set_ostream(std::ostream &out)
+  logger& set_ostream(std::ostream &_out)
   {
-    this->out = &out;
+    this->_out = &_out;
     return *this;
   }
-  logger& set_sep(const std::string &sep)
+  logger& set_sep(const std::string &_sep)
   {
-    this->sep = sep;
+    this->_sep = _sep;
     return *this;
   }
   logger& assert_exit()
@@ -75,7 +75,7 @@ public:
 
   logger& endl()
   {
-    *out << std::endl;
+    *_out << std::endl;
     return *this;
   }
 
@@ -86,13 +86,13 @@ public:
   template <class Ta, class Tb, class... Tc> 
   logger& log(const Ta &a, const Tb &b, Tc... c)
   {
-    return log(a).log(sep).log(b, c...);
+    return log(a).log(_sep).log(b, c...);
   }
   template <class Ta,
             typename = decltype(std::cout << std::declval<Ta>())>
   logger& log(const Ta &a)
   {
-    *out << a;
+    *_out << a;
     return *this;
   }
 
@@ -103,13 +103,13 @@ public:
             typename = typename std::enable_if<!std::is_base_of<
               std::string, typename std::decay<T>::type>::value>::type,
             typename value_type = typename T::value_type>
-  logger& log(const T &container)
+  logger& log(const T &_container)
   {
     log("{");
-    for (auto it = container.begin(); it != container.end(); ++it)
+    for (auto it = _container.begin(); it != _container.end(); ++it)
     {
-      if (it != container.begin())
-        log(sep);
+      if (it != _container.begin())
+        log(_sep);
       log(*it);
     }
     log("}");
@@ -139,33 +139,33 @@ public:
 #endif
 
   template <class T>
-  logger& hint(const T &x, std::string color = "cyan")
+  logger& hint(const T &x, std::string _color = "cyan")
   {
-    color = get_color(color);
-    return log(color).log(x).log("\x3a\x20").log(c_reset);
+    _color = _get_color(_color);
+    return log(_color).log(x).log("\x3a\x20").log(_c_reset);
   }
 
   template <class... T>
-  logger& operator() (T... value)
+  logger& operator() (T... _value)
   {
-    return log(value...).endl();
+    return log(_value...).endl();
   }
 
   template <class... T>
-  logger& _assert(const std::string &file, int line, 
-                  const std::string &raw, bool value, 
-                  const std::string &info_str, T... info)
+  logger& _assert(const std::string &_file, int _line, 
+                  const std::string &_raw, bool _value, 
+                  const std::string &_info_str, T... _info)
   {
-    if (!value)
+    if (!_value)
     {
       endl();
-      hint(file, "magenta").hint(line, "magenta")
-        .log(c_yellow).log("Assertion `")
-        .log(c_yellow_bold).log(raw)
-        .log(c_yellow).log("` failed")
-        .log(c_reset).endl();
-      if (info_str != "")
-        hint("detail", "magenta").hint(info_str)(info...);
+      hint(_file, "magenta").hint(_line, "magenta")
+        .log(_c_yellow).log("Assertion `")
+        .log(_c_yellow_bold).log(_raw)
+        .log(_c_yellow).log("` failed")
+        .log(_c_reset).endl();
+      if (_info_str != "")
+        hint("detail", "magenta").hint(_info_str)(_info...);
       if (_assert_exit) exit(0);
     }
     return *this;
