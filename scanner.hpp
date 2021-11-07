@@ -7,18 +7,18 @@
 namespace cm
 {
 
-template <class Type, size_t buf_size>
+template <class _Type, size_t _buf_size>
 class buffer_reader
 {
 protected:
   FILE *src;
-  Type *const buff;
-  Type *buff_end;
-  Type *buff_pos;
+  _Type *const buff;
+  _Type *buff_end;
+  _Type *buff_pos;
 
-  void flush()
+  void _flush()
   {
-    buff_end = buff + fread(buff, sizeof(Type), buf_size, src);
+    buff_end = buff + fread(buff, sizeof(_Type), _buf_size, src);
     buff_pos = buff;
     if (buff_end == buff)
     {
@@ -27,9 +27,9 @@ protected:
   }
 
 public:
-  buffer_reader(FILE *src) : src(src), buff(new Type[buf_size])
+  buffer_reader(FILE *_src) : src(_src), buff(new _Type[_buf_size])
   {
-    flush();
+    _flush();
   }
 
   buffer_reader(const buffer_reader&) =delete;
@@ -37,16 +37,16 @@ public:
   buffer_reader& operator= (const buffer_reader&) =delete;
   buffer_reader& operator= (buffer_reader&&) =delete;
 
-  Type get() const
+  _Type get() const
   {
     return *buff_pos;
   }
-  Type next()
+  _Type next()
   {
-    Type result = get();
+    _Type result = get();
     buff_pos ++;
     if (buff_pos == buff_end)
-      flush();
+      _flush();
     return result;
   }
 
@@ -63,22 +63,22 @@ using optimal_reader = buffer_reader<char, 1>;
 using optimal_reader = buffer_reader<char, 1 << 16>;
 #endif
 
-template <class BufferReader>
-class scanner : protected BufferReader
+template <class _BufferReader>
+class scanner : protected _BufferReader
 {
 private:
-  using BufferReader::get;
-  using BufferReader::next;
-  inline bool is_ws(char c)
+  using _BufferReader::get;
+  using _BufferReader::next;
+  inline bool _is_ws(char c)
   {
     return c <= ' ';
   }
-  inline bool is_cr(char c)
+  inline bool _is_cr(char c)
   {
     return c == '\n' || c == '\r';
   }
 
-  int get_sign()
+  int _get_sign()
   {
     while (!isdigit(get()) && get() != '-')
       next();
@@ -89,33 +89,33 @@ private:
 
 public:
   scanner() =delete;
-  using BufferReader::BufferReader;
+  using _BufferReader::_BufferReader;
 
   char next_char()
   {
-    while (is_ws(get())) next();
+    while (_is_ws(get())) next();
     return next();
   }
 
   char *next_token(char *s)
   {
-    while (is_ws(get())) next();
-    while (!is_ws(get())) *s++ = next();
+    while (_is_ws(get())) next();
+    while (!_is_ws(get())) *s++ = next();
     *s = '\0';
     return s;
   }
 
   char *next_line(char *s)
   {
-    while (is_ws(get())) next();
-    while (!is_cr(get())) *s++ = next();
+    while (_is_ws(get())) next();
+    while (!_is_cr(get())) *s++ = next();
     *s = '\0';
     return s;
   }
   
   int next_int()
   {
-    int sign = get_sign();
+    int sign = _get_sign();
     int result = 0;
     while (isdigit(get()))
       result = result * 10 + (next() - '0');
@@ -124,26 +124,26 @@ public:
 
   long long next_long()
   {
-    int sign = get_sign();
+    int sign = _get_sign();
     long long result = 0;
     while (isdigit(get()))
       result = result * 10 + (next() - '0');
     return sign * result;
   }
 
-  template <class Integer>
-  Integer next_integer()
+  template <class _Integer>
+  _Integer next_integer()
   {
-    Integer sign = get_sign();
-    Integer result(0);
+    _Integer sign = _get_sign();
+    _Integer result(0);
     while (isdigit(get()))
-      result = result * Integer(10) + Integer(next() - '0');
+      result = result * _Integer(10) + _Integer(next() - '0');
     return sign * result;
   }
 
   double next_double()
   {
-    int sign = get_sign();
+    int sign = _get_sign();
     double result = 0;
     while (isdigit(get()))
       result = result * 10 + (next() - '0');
