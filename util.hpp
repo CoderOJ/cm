@@ -4,10 +4,7 @@
 #include <utility>
 #include <vector>
 
-#ifdef CM_DEBUG
-#define CONSTRAINT(n, a, b) constexpr auto n = b;
-#else
-#endif
+#define _INLINE inline __attribute__((always_inline))
 
 namespace cm
 {
@@ -25,10 +22,10 @@ inline bool check_max(T &a, const T &b)
 
 struct once_t
 {
-  bool once = true;
+  bool _once = true;
   bool operator()()
   {
-    return once ? (once=false, true) : false;
+    return _once ? (_once=false, true) : false;
   }
 };
 
@@ -37,22 +34,22 @@ struct once_t
 using cm::check_min;
 using cm::check_max;
 
-template <class A, class B> inline __attribute__((always_inline)) 
+template <class A, class B> _INLINE
 std::pair<A,B> operator+ (const std::pair<A,B> &lhs, const std::pair<A,B> &rhs) 
 {
   return std::make_pair(lhs.first + rhs.first, lhs.second + rhs.second); 
 }
-template <class A, class B> inline __attribute__((always_inline)) 
+template <class A, class B> _INLINE
 std::pair<A,B> operator- (const std::pair<A,B> &lhs, const std::pair<A,B> &rhs) 
 {
   return std::make_pair(lhs.first - rhs.first, lhs.second - rhs.second); 
 }
-template <class A, class B> inline __attribute__((always_inline)) 
+template <class A, class B> _INLINE
 std::pair<A,B>& operator+= (std::pair<A,B> &lhs, const std::pair<A,B> &rhs) 
 {
   lhs.first += rhs.first; lhs.second += rhs.second; return lhs; 
 }
-template <class A, class B> inline __attribute__((always_inline)) 
+template <class A, class B> _INLINE
 std::pair<A,B>& operator-= (std::pair<A,B> &lhs, const std::pair<A,B> &rhs) 
 {
   lhs.first -= rhs.first; lhs.second -= rhs.second; return lhs; 
@@ -105,5 +102,13 @@ std::vector<T> operator+ (std::vector<T> a, T &&b)
   ~CM_INNER_ATEXIT##line## _t () Pred } CM_INNER_ATEXIT##line
 #define M_AT_EXIT(line, Pred) M__AT_EXIT(line, Pred)
 #define AT_EXIT(Pred) M_AT_EXIT(__LINE__, Pred)
+
+#ifdef CM_DEBUG
+#define CONSTRAINT(n, a, b) constexpr auto n = b;
+#else
+#define CONSTRAINT(n, a, b) constexpr auto n = a;
+#endif
+
+#undef _INLINE
 
 #endif
