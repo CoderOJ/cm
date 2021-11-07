@@ -7,7 +7,6 @@
 #ifdef CM_DEBUG
 #define CONSTRAINT(n, a, b) constexpr auto n = b;
 #else
-#define CONSTRAINT(n, a, b) constexpr auto n = a;
 #endif
 
 namespace cm
@@ -97,14 +96,14 @@ std::vector<T> operator+ (std::vector<T> a, T &&b)
   return a;
 }
 
-#define __AT_INIT(line, Pred) struct CM_INNER_ATINIT##line##_t { \
+#define M__AT_INIT(line, Pred) struct CM_INNER_ATINIT##line##_t { \
   CM_INNER_ATINIT##line## _t () Pred } CM_INNER_ATINIT##line
-#define _AT_INIT(line, Pred) __AT_INIT(line, Pred)
-#define AT_INIT(Pred) _AT_INIT(__LINE__, Pred)
+#define M_AT_INIT(line, Pred) M__AT_INIT(line, Pred)
+#define AT_INIT(Pred) M_AT_INIT(__LINE__, Pred)
 
-#define __AT_EXIT(line, Pred) struct CM_INNER_ATEXIT##line##_t { \
+#define M__AT_EXIT(line, Pred) struct CM_INNER_ATEXIT##line##_t { \
   ~CM_INNER_ATEXIT##line## _t () Pred } CM_INNER_ATEXIT##line
-#define _AT_EXIT(line, Pred) __AT_EXIT(line, Pred)
-#define AT_EXIT(Pred) _AT_EXIT(__LINE__, Pred)
+#define M_AT_EXIT(line, Pred) M__AT_EXIT(line, Pred)
+#define AT_EXIT(Pred) M_AT_EXIT(__LINE__, Pred)
 
 #endif

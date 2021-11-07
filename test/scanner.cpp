@@ -15,7 +15,6 @@ int main()
 
   see(sc.next_int());
   see(sc.next_long());
-  see(sc.next_modint(100));
   see(sc.next_double());
   return 0;
 }

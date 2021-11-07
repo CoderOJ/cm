@@ -1,5 +1,5 @@
-#include "../intm_pair.hpp"
-#include "../debug.hpp"
+#include "../intm_pair"
+#include "../debug"
 #include "../intm"
 
 int main()

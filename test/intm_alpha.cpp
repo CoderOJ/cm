@@ -1,4 +1,4 @@
-#include "../intm_alpha.hpp"
+#include "../intm_alpha"
 
 constexpr int mod = 998244353;
 constexpr int N = 1000;

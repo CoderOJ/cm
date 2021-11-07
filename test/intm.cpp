@@ -1,5 +1,5 @@
-#include "../debug.hpp"
-#include "../intm.hpp"
+#include "../debug"
+#include "../intm"
 #include <cassert>
 
 int main()

@@ -1,7 +1,71 @@
 #!/usr/bin/env python3
 
 import sys
+import re
 from os import popen
+
+token_keep = [
+    "__FILE__",
+    "__LINE__",
+    "__FUNCTION__",
+    "__cplusplus",
+    "__attribute__",
+]
+
+def get_tokens(code):
+    result = {}
+    def add_item(item):
+        if item != "" and item[0] == "_":
+            if item in result:
+                result[item] += 1
+            else:
+                result[item] = 1
+    cur = ""
+    for c in code:
+        if re.match("[0-9a-zA-Z_]", c):
+            cur += c
+        else:
+            add_item(cur)
+            cur = ""
+    add_item(cur)
+    return result
+
+def replace_tokens(code, tr):
+    result = []
+    def add_item(item):
+        if item in tr:
+            result.append(tr[item])
+        else:
+            result.append(item)
+    cur = ""
+    for c in code:
+        if re.match("[0-9a-zA-Z_]", c):
+            cur += c
+        else:
+            add_item(cur)
+            cur = ""
+            result.append(c)
+    add_item(cur)
+    return "".join(result)
+
+
+def get_replaces(tokens):
+    def gen_tokens():
+        c = 1
+        while True:
+            t = hex(c)[2:]
+            yield "_" + t
+            c += 1
+    token_list = list(tokens.keys())
+    token_list.sort(key = lambda t: tokens[t])
+    r_token = gen_tokens()
+    result = {}
+    for t in token_list:
+        if t in token_keep:
+            result[t] = t
+        else:
+            result[t] = next(r_token)
+    return result
 
 def do_file(filename, min_filename):
     output = open(min_filename, "w")
@@ -23,10 +87,11 @@ def do_file(filename, min_filename):
         return code
 
     cur = ""
-    def refresh(cur):
+    res_lines = []
+    def refresh(res_lines, cur):
         cur = compress(cur)
         if cur != "":
-            print(cur, file=output)
+            res_lines.append(cur)
 
     for line in file:
         line = line.split("//")[0]
@@ -35,14 +100,18 @@ def do_file(filename, min_filename):
         if line == "":
             continue
         elif line[0] == "#":
-            refresh(cur)
+            refresh(res_lines, cur)
             cur = ""
-            print(line, file=output)
+            res_lines.append(line)
         else:
             cur += " " + line
+    refresh(res_lines, cur)
 
-    refresh(cur)
-    cur = ""
+    res = "\n".join(res_lines)
+    tr = get_replaces(get_tokens(res))
+    res = replace_tokens(res, tr)
+    print(res, file=output)
+
 
 files = popen("ls", "r").read().split("\n")
 for file in files:
