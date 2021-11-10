@@ -61,6 +61,10 @@ protected:
       a = static_cast<INTM_FAST_32>((INTM_FAST_64)(a) * (INTM_FAST_64)(a) % MOD); }
     return res; }
 
+  static int pretty(int x) {
+    if (x >= MOD - 1000) return x - MOD;
+    return x; }
+
 public:
 
 #if __cplusplus >= 201103L
@@ -78,7 +82,14 @@ public:
   _ATTR_INLINE _CXX11_CONSTEXPR intm(unsigned long a)      : a(static_cast<INTM_FAST_32>(a % MOD))             {}
   _ATTR_INLINE _CXX11_CONSTEXPR intm(unsigned long long a) : a(static_cast<INTM_FAST_32>(a % MOD))             {}
   template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR CXX11_EXPLICIT operator _IntType() const { return a; }
-  _ATTR_INLINE friend std::ostream& operator<< (std::ostream& out, const intm  rhs) { out << rhs.a; return out; }
+  _ATTR_INLINE friend std::ostream& operator<< (std::ostream& out, const intm  rhs) 
+  { 
+#ifdef CM_DEBUG
+    out << pretty(rhs.a); return out; 
+#else
+    out << rhs.a; return out; 
+#endif
+  }
   _ATTR_INLINE friend std::istream& operator>> (std::istream& in,        intm &rhs) { long long a; in >> a; rhs = intm(a); return in; }
 
   template <class _IntType> _ATTR_INLINE _CXX14_CONSTEXPR intm pow(_IntType k) const { return raw(__impl_pow(a, k)); }
