@@ -56,6 +56,7 @@ def parse_file(filename):
                 if p:
                     _, name = re.split("\s+", sline, 1)
                     del macro_list[name]
+                    add_line(line)
             elif sline.startswith('#ifdef '):
                 if p:
                     _, name = re.split("\s+", sline, 1)
