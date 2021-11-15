@@ -67,10 +67,7 @@ def get_replaces(tokens):
             result[t] = next(r_token)
     return result
 
-def do_file(filename, min_filename):
-    output = open(min_filename, "w")
-
-    file = open(filename).readlines()
+def do_file(file, min_filename):
 
     def replace_rec(code, pat, rep):
         while code.find(pat) != -1:
@@ -110,11 +107,17 @@ def do_file(filename, min_filename):
     res = "\n".join(res_lines)
     tr = get_replaces(get_tokens(res))
     res = replace_tokens(res, tr)
-    print(res, file=output)
 
+    if min_filename != None:
+        output = open(min_filename, "w")
+        print(res, file=output)
+    else:
+        return res
 
-files = popen("ls", "r").read().split("\n")
-for file in files:
-    if file.endswith(".hpp") and not file.endswith(".min.hpp"):
-        min_filename = file[:-4]
-        do_file(file, min_filename)
+if __name__ == "__main__":
+    files = popen("ls", "r").read().split("\n")
+    for file in files:
+        if file.endswith(".hpp") and not file.endswith(".min.hpp"):
+            min_filename = file[:-4]
+            lines = open(file).readlines()
+            do_file(lines, min_filename)
