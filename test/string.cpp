@@ -1,6 +1,6 @@
-#include "../intm"
 #include "../string"
 #include "../debug"
+#include "../intm"
 
 int main()
 {
@@ -8,8 +8,8 @@ int main()
   char b[] = "cdefg";
 
   using hash_int_t = cm::intm<998244353>;
-  cm::string::hash_u64<233> ha(a, a + 5);
-  cm::string::hash_u64<233> hb(b, b + 5);
+  cm::string::hash_u64<233>        ha(a, a + 5);
+  cm::string::hash_u64<233>        hb(b, b + 5);
   cm::string::hash_mod<hash_int_t> ham(233, a, a + 5);
   cm::string::hash_mod<hash_int_t> hbm(233, b, b + 5);
 

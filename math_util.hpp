@@ -6,7 +6,8 @@
 namespace cm
 {
 
-template <class _Integer> struct math_util
+template <class _Integer>
+struct math_util
 {
   static class _fac_t
   {
@@ -24,7 +25,7 @@ template <class _Integer> struct math_util
         if (c == 0)
         {
           _fac[0] = 1;
-          c = 1;
+          c       = 1;
         }
         for (int i = c; i < n; i++)
         {
@@ -32,7 +33,10 @@ template <class _Integer> struct math_util
         }
       }
     }
-    _Integer operator()(int i) const { return _fac[i]; }
+    _Integer operator()(int i) const
+    {
+      return _fac[i];
+    }
     _Integer get(int i)
     {
       require(i);
@@ -44,7 +48,7 @@ template <class _Integer> struct math_util
   {
   private:
     std::vector<_Integer> _inv;
-    static constexpr int MOD = _Integer::MOD;
+    static constexpr int  MOD = _Integer::MOD;
 
   public:
     void require(int n)
@@ -57,12 +61,12 @@ template <class _Integer> struct math_util
         if (c == 0)
         {
           _inv[0] = 1;
-          c = 1;
+          c       = 1;
         }
         if (c == 1 && n > 1)
         {
           _inv[1] = 1;
-          c = 2;
+          c       = 2;
         }
         for (int i = c; i < n; i++)
         {
@@ -70,7 +74,10 @@ template <class _Integer> struct math_util
         }
       }
     }
-    _Integer operator()(int i) const { return _inv[i]; }
+    _Integer operator()(int i) const
+    {
+      return _inv[i];
+    }
     _Integer get(int i)
     {
       require(i);
@@ -95,7 +102,7 @@ template <class _Integer> struct math_util
         if (c == 0)
         {
           _ifac[0] = 1;
-          c = 1;
+          c        = 1;
         }
         for (int i = c; i < n; i++)
         {
@@ -103,7 +110,10 @@ template <class _Integer> struct math_util
         }
       }
     }
-    _Integer operator()(int i) const { return _ifac[i]; }
+    _Integer operator()(int i) const
+    {
+      return _ifac[i];
+    }
     _Integer get(int i)
     {
       require(i);

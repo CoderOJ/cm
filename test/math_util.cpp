@@ -5,8 +5,8 @@
 int main()
 {
   constexpr int MOD = 998244353;
-  using int_t = cm::intm<MOD>;
-  using mu = cm::math_util<int_t>;
+  using int_t       = cm::intm<MOD>;
+  using mu          = cm::math_util<int_t>;
 
   mu::fac.require(5);
   cm_assert(mu::fac(4) == 24);

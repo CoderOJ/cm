@@ -40,22 +40,21 @@ protected:
 
 public:
   template <class InputIterator>
-  hash_u64(InputIterator begin, InputIterator end) :
-    size(static_cast<size_t>(std::distance(begin, end))),
-    base     (new uint64_t[size + 1]),
-    base_inv (new uint64_t[size + 1]),
-    sum      (new uint64_t[size + 1])
+  hash_u64(InputIterator begin, InputIterator end)
+      : size(static_cast<size_t>(std::distance(begin, end))),
+        base(new uint64_t[size + 1]), base_inv(new uint64_t[size + 1]),
+        sum(new uint64_t[size + 1])
   {
-    base[0] = 1;
+    base[0]     = 1;
     base_inv[0] = 1;
-    sum[0] = 0;
+    sum[0]      = 0;
 
     uint64_t seed_inv = __impl_calc_inv(seed);
     for (size_t i = 0; i < size; i++)
     {
-      base[i + 1] = base[i] * seed;
+      base[i + 1]     = base[i] * seed;
       base_inv[i + 1] = base_inv[i] * seed_inv;
-      sum[i + 1] = sum[i] + base[i] * static_cast<uint64_t>(*begin++);
+      sum[i + 1]      = sum[i] + base[i] * static_cast<uint64_t>(*begin++);
     }
   }
 
@@ -70,13 +69,13 @@ public:
   std::pair<size_t, uint64_t> cat(const std::pair<size_t, uint64_t> &hpa,
                                   const std::pair<size_t, uint64_t> &hpb)
   {
-    return std::make_pair(hpa.first + hpb.first, 
+    return std::make_pair(hpa.first + hpb.first,
                           hpa.second + base[hpa.first] * hpb.second);
   }
 
   ~hash_u64()
   {
-    delete[] base;    
+    delete[] base;
     delete[] base_inv;
     delete[] sum;
   }
@@ -95,22 +94,21 @@ protected:
 
 public:
   template <class InputIterator>
-  hash_mod(IntType seed, InputIterator begin, InputIterator end) :
-    size(static_cast<size_t>(std::distance(begin, end))),
-    base     (new IntType[size + 1]),
-    base_inv (new IntType[size + 1]),
-    sum      (new IntType[size + 1])
+  hash_mod(IntType seed, InputIterator begin, InputIterator end)
+      : size(static_cast<size_t>(std::distance(begin, end))),
+        base(new IntType[size + 1]), base_inv(new IntType[size + 1]),
+        sum(new IntType[size + 1])
   {
-    base[0] = 1;
+    base[0]     = 1;
     base_inv[0] = 1;
-    sum[0] = 0;
+    sum[0]      = 0;
 
     IntType seed_inv = 1 / seed;
     for (size_t i = 0; i < size; i++)
     {
-      base[i + 1] = base[i] * seed;
+      base[i + 1]     = base[i] * seed;
       base_inv[i + 1] = base_inv[i] * seed_inv;
-      sum[i + 1] = sum[i] + base[i] * static_cast<IntType>(*begin++);
+      sum[i + 1]      = sum[i] + base[i] * static_cast<IntType>(*begin++);
     }
   }
 
@@ -125,13 +123,13 @@ public:
   std::pair<size_t, IntType> cat(const std::pair<size_t, IntType> &hpa,
                                  const std::pair<size_t, IntType> &hpb)
   {
-    return std::make_pair(hpa.first + hpb.first, 
+    return std::make_pair(hpa.first + hpb.first,
                           hpa.second + base[hpa.first] * hpb.second);
   }
 
   ~hash_mod()
   {
-    delete[] base;    
+    delete[] base;
     delete[] base_inv;
     delete[] sum;
   }
@@ -145,7 +143,7 @@ size_t lcp(const Hasher &a, size_t al, const Hasher &b, size_t bl)
 
   for (size_t i = 1; i < 4 && i <= r; i++)
     if (a.get_hash(al, al + i) != b.get_hash(bl, bl + i))
-      return i - 1; 
+      return i - 1;
 
   while (l < r)
   {
@@ -166,7 +164,7 @@ size_t lcs(const Hasher &a, size_t al, const Hasher &b, size_t bl)
 
   for (size_t i = 1; i < 4 && i <= r; i++)
     if (a.get_hash(al - i, al) != b.get_hash(bl - i, bl))
-      return i - 1; 
+      return i - 1;
 
   while (l < r)
   {
@@ -179,8 +177,8 @@ size_t lcs(const Hasher &a, size_t al, const Hasher &b, size_t bl)
   return l;
 }
 
-}
+} // namespace string
 
-}
+} // namespace cm
 
 #endif

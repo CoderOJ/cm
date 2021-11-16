@@ -5,8 +5,8 @@
 #include <type_traits>
 #endif
 
-#include <limits>
 #include <iostream>
+#include <limits>
 
 #ifndef INTM_FAST_32
 #define INTM_FAST_32 int
@@ -15,11 +15,11 @@
 #define INTM_FAST_64 unsigned long long
 #endif
 
-#define _ATTR_INLINE __attribute__ ((always_inline)) inline
+#define _ATTR_INLINE __attribute__((always_inline)) inline
 
 #if __cplusplus >= 201103L
 #define _CXX11_CONSTEXPR constexpr
-#define CXX11_EXPLICIT  explicit
+#define CXX11_EXPLICIT explicit
 #else
 #define _CXX11_CONSTEXPR
 #define CXX11_EXPLICIT
@@ -31,11 +31,11 @@
 #define _CXX14_CONSTEXPR
 #endif
 
-namespace cm 
+namespace cm
 {
 
 template <INTM_FAST_32 _MOD = 998244353>
-class intm 
+class intm
 {
 
 #if __cplusplus >= 201103L
@@ -49,61 +49,98 @@ protected:
   INTM_FAST_32 a = 0;
   _ATTR_INLINE _CXX11_CONSTEXPR explicit intm(INTM_FAST_32 a, int) : a(a) {}
 
-  static _ATTR_INLINE _CXX11_CONSTEXPR INTM_FAST_32 
-  __impl_inc(INTM_FAST_32 a) { return a < 0 ? a+MOD : a; }
+  static _ATTR_INLINE _CXX11_CONSTEXPR INTM_FAST_32 __impl_inc(INTM_FAST_32 a)
+  {
+    return a < 0 ? a + MOD : a;
+  }
 
-  static _ATTR_INLINE _CXX11_CONSTEXPR INTM_FAST_32
-  __impl_dec(INTM_FAST_32 a) { return a >= MOD ? a-MOD : a; }
+  static _ATTR_INLINE _CXX11_CONSTEXPR INTM_FAST_32 __impl_dec(INTM_FAST_32 a)
+  {
+    return a >= MOD ? a - MOD : a;
+  }
 
   template <class IntType>
-  static _ATTR_INLINE _CXX14_CONSTEXPR INTM_FAST_32
-  __impl_pow(INTM_FAST_32 a, IntType b) {
-    INTM_FAST_32 res = 1; 
-    for (; b; b >>= 1) {
-      if (b & 1) { res = static_cast<INTM_FAST_32>((INTM_FAST_64)(res) * (INTM_FAST_64)(a) % MOD); }
-      a = static_cast<INTM_FAST_32>((INTM_FAST_64)(a) * (INTM_FAST_64)(a) % MOD); }
-    return res; }
+  static _ATTR_INLINE _CXX14_CONSTEXPR INTM_FAST_32 __impl_pow(INTM_FAST_32 a,
+                                                               IntType      b)
+  {
+    INTM_FAST_32 res = 1;
+    for (; b; b >>= 1)
+    {
+      if (b & 1)
+      {
+        res = (INTM_FAST_32)((INTM_FAST_64)(res) * (INTM_FAST_64)(a) % MOD);
+      }
+      a = (INTM_FAST_32)((INTM_FAST_64)(a) * (INTM_FAST_64)(a) % MOD);
+    }
+    return res;
+  }
 
-  static int pretty(int x) {
-    if (x >= MOD - 1000) return x - MOD;
-    return x; }
+  static int pretty(int x)
+  {
+    if (x >= MOD - 1000)
+      return x - MOD;
+    return x;
+  }
 
 public:
-
 #if __cplusplus >= 201103L
-  intm() =default;
+  intm() = default;
 #else
   intm() {}
 #endif
 
-  static intm raw(INTM_FAST_32 x) { return intm(x, 0); }
+  static intm raw(INTM_FAST_32 x)
+  {
+    return intm(x, 0);
+  }
 
+  // clang-format off
   _ATTR_INLINE _CXX11_CONSTEXPR intm(int a)                : a(static_cast<INTM_FAST_32>(__impl_inc(a % MOD))) {}
   _ATTR_INLINE _CXX11_CONSTEXPR intm(long a)               : a(static_cast<INTM_FAST_32>(__impl_inc(a % MOD))) {}
   _ATTR_INLINE _CXX11_CONSTEXPR intm(long long a)          : a(static_cast<INTM_FAST_32>(__impl_inc(a % MOD))) {}
   _ATTR_INLINE _CXX11_CONSTEXPR intm(unsigned int a)       : a(static_cast<INTM_FAST_32>(a % MOD))             {}
   _ATTR_INLINE _CXX11_CONSTEXPR intm(unsigned long a)      : a(static_cast<INTM_FAST_32>(a % MOD))             {}
   _ATTR_INLINE _CXX11_CONSTEXPR intm(unsigned long long a) : a(static_cast<INTM_FAST_32>(a % MOD))             {}
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR CXX11_EXPLICIT operator _IntType() const { return a; }
-  _ATTR_INLINE friend std::ostream& operator<< (std::ostream& out, const intm  rhs) 
-  { 
+  // clang-format on
+
+  template <class _IntType>
+  _ATTR_INLINE _CXX11_CONSTEXPR CXX11_EXPLICIT operator _IntType() const
+  {
+    return a;
+  }
+  _ATTR_INLINE friend std::ostream &operator<<(std::ostream &out,
+                                               const intm    rhs)
+  {
 #ifdef CM_DEBUG
-    out << pretty(rhs.a); return out; 
+    out << pretty(rhs.a);
+    return out;
 #else
-    out << rhs.a; return out; 
+    out << rhs.a;
+    return out;
 #endif
   }
-  _ATTR_INLINE friend std::istream& operator>> (std::istream& in,        intm &rhs) { long long a; in >> a; rhs = intm(a); return in; }
+  _ATTR_INLINE friend std::istream &operator>>(std::istream &in, intm &rhs)
+  {
+    long long a;
+    in >> a;
+    rhs = intm(a);
+    return in;
+  }
 
-  template <class _IntType> _ATTR_INLINE _CXX14_CONSTEXPR intm pow(_IntType k) const { return raw(__impl_pow(a, k)); }
-  _ATTR_INLINE _CXX14_CONSTEXPR intm inv() const 
-  { 
+  template <class _IntType>
+  _ATTR_INLINE _CXX14_CONSTEXPR intm pow(_IntType k) const
+  {
+    return raw(__impl_pow(a, k));
+  }
+  _ATTR_INLINE _CXX14_CONSTEXPR intm inv() const
+  {
 #ifdef CM_DEBUG_H
     cm_assert(a != 0, "warning: 0 do not have inv");
 #endif
-    return raw(__impl_pow(a, MOD-2)); 
+    return raw(__impl_pow(a, MOD - 2));
   }
 
+  // clang-format off
   _ATTR_INLINE _CXX11_CONSTEXPR friend bool operator<  (const intm a, const intm b) { return a.a <  b.a; }
   _ATTR_INLINE _CXX11_CONSTEXPR friend bool operator<= (const intm a, const intm b) { return a.a <= b.a; }
   _ATTR_INLINE _CXX11_CONSTEXPR friend bool operator>  (const intm a, const intm b) { return a.a >  b.a; }
@@ -150,9 +187,10 @@ public:
   template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend _IntType& operator-= (      _IntType &a, const intm b) { return a -= _IntType(b); }
   template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend _IntType& operator*= (      _IntType &a, const intm b) { return a *= _IntType(b); }
   template <class _IntType> _ATTR_INLINE _CXX14_CONSTEXPR friend _IntType& operator/= (      _IntType &a, const intm b) { return a /= _IntType(b); }
+  // clang-format on
 };
 
-}
+} // namespace cm
 
 #undef _ATTR_INLINE
 #undef _CXX11_CONSTEXPR

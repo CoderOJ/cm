@@ -1,0 +1,11 @@
+Language: Cpp
+BasedOnStyle: Microsoft
+IndentWidth: 2
+ColumnLimit: 80
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
+AlignOperands: Align
+AlignTrailingComments: true
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortBlocksOnASingleLine: Empty
+AlwaysBreakTemplateDeclarations: true

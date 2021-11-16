@@ -1,8 +1,8 @@
 #include "../intm_alpha"
 
 constexpr int mod = 998244353;
-constexpr int N = 1000;
-using int_t = cm::intm<mod>;
+constexpr int N   = 1000;
+using int_t       = cm::intm<mod>;
 int_t _stir[2][N], *stir[N];
 
 int main()
@@ -15,7 +15,7 @@ int main()
   {
     stir[i][0] = 0;
     for (int j = 1; j <= i; j++)
-      stir[i][j] = stir[i-1][j-1] + stir[i-1][j] * cm::intm_r<mod, N>(j);
+      stir[i][j] = stir[i - 1][j - 1] + stir[i - 1][j] * cm::intm_r<mod, N>(j);
   }
 
   std::cout << stir[N - 1][N / 2] << std::endl;

@@ -6,10 +6,11 @@
 namespace cm
 {
 
-template <bool _have_push_down = false> struct segment_tree_node_base
+template <bool _have_push_down = false>
+struct segment_tree_node_base
 {
   static constexpr bool have_push_down = false;
-  segment_tree_node_base() = default;
+  segment_tree_node_base()             = default;
   segment_tree_node_base(int) {}
   segment_tree_node_base(const segment_tree_node_base &,
                          const segment_tree_node_base &)
@@ -18,10 +19,11 @@ template <bool _have_push_down = false> struct segment_tree_node_base
   void push_down(segment_tree_node_base &, segment_tree_node_base &) {}
 };
 
-template <> struct segment_tree_node_base<true>
+template <>
+struct segment_tree_node_base<true>
 {
   static constexpr bool have_push_down = true;
-  segment_tree_node_base() = default;
+  segment_tree_node_base()             = default;
   segment_tree_node_base(int) {}
   segment_tree_node_base(const segment_tree_node_base &,
                          const segment_tree_node_base &)
@@ -29,10 +31,11 @@ template <> struct segment_tree_node_base<true>
   }
 };
 
-template <class _NodeType> struct segment_tree
+template <class _NodeType>
+struct segment_tree
 {
 protected:
-  int l = 0, r = 0;
+  int                    l = 0, r = 0;
   std::vector<_NodeType> p;
 
   void _init(int u, int l, int r)
@@ -94,7 +97,10 @@ protected:
 
 public:
   segment_tree() = default;
-  segment_tree(int r) : l(0), r(r), p((r - l) * 2 - 1) { _init(0, l, r); }
+  segment_tree(int r) : l(0), r(r), p((r - l) * 2 - 1)
+  {
+    _init(0, l, r);
+  }
   segment_tree(int l, int r) : l(l), r(r), p((r - l) * 2 - 1)
   {
     _init(0, l, r);

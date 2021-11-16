@@ -1,8 +1,8 @@
 #ifndef CM_SCANNER_H
 #define CM_SCANNER_H
 
-#include <cstdio>
 #include <cctype>
+#include <cstdio>
 
 namespace cm
 {
@@ -11,10 +11,10 @@ template <class _Type, size_t _buf_size>
 class buffer_reader
 {
 protected:
-  FILE *src;
+  FILE *       src;
   _Type *const buff;
-  _Type *buff_end;
-  _Type *buff_pos;
+  _Type *      buff_end;
+  _Type *      buff_pos;
 
   void _flush()
   {
@@ -32,10 +32,10 @@ public:
     _flush();
   }
 
-  buffer_reader(const buffer_reader&) =delete;
-  buffer_reader(buffer_reader&&) =delete;
-  buffer_reader& operator= (const buffer_reader&) =delete;
-  buffer_reader& operator= (buffer_reader&&) =delete;
+  buffer_reader(const buffer_reader &) = delete;
+  buffer_reader(buffer_reader &&)      = delete;
+  buffer_reader &operator=(const buffer_reader &) = delete;
+  buffer_reader &operator=(buffer_reader &&) = delete;
 
   _Type get() const
   {
@@ -44,7 +44,7 @@ public:
   _Type next()
   {
     _Type result = get();
-    buff_pos ++;
+    buff_pos++;
     if (buff_pos == buff_end)
       _flush();
     return result;
@@ -88,34 +88,39 @@ private:
   }
 
 public:
-  scanner() =delete;
+  scanner() = delete;
   using _BufferReader::_BufferReader;
 
   char next_char()
   {
-    while (_is_ws(get())) next();
+    while (_is_ws(get()))
+      next();
     return next();
   }
 
   char *next_token(char *s)
   {
-    while (_is_ws(get())) next();
-    while (!_is_ws(get())) *s++ = next();
+    while (_is_ws(get()))
+      next();
+    while (!_is_ws(get()))
+      *s++ = next();
     *s = '\0';
     return s;
   }
 
   char *next_line(char *s)
   {
-    while (_is_ws(get())) next();
-    while (!_is_cr(get())) *s++ = next();
+    while (_is_ws(get()))
+      next();
+    while (!_is_cr(get()))
+      *s++ = next();
     *s = '\0';
     return s;
   }
-  
+
   int next_int()
   {
-    int sign = _get_sign();
+    int sign   = _get_sign();
     int result = 0;
     while (isdigit(get()))
       result = result * 10 + (next() - '0');
@@ -124,7 +129,7 @@ public:
 
   long long next_long()
   {
-    int sign = _get_sign();
+    int       sign   = _get_sign();
     long long result = 0;
     while (isdigit(get()))
       result = result * 10 + (next() - '0');
@@ -143,7 +148,7 @@ public:
 
   double next_double()
   {
-    int sign = _get_sign();
+    int    sign   = _get_sign();
     double result = 0;
     while (isdigit(get()))
       result = result * 10 + (next() - '0');
@@ -158,6 +163,6 @@ public:
   }
 };
 
-}
+} // namespace cm
 
 #endif

@@ -1,4 +1,7 @@
 #include "../debug"
 #include "../debug.hpp"
 
-int main() { return 0; }
+int main()
+{
+  return 0;
+}
