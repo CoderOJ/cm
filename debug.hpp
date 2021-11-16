@@ -16,6 +16,7 @@ private:
   std::ostream *_out;
   std::string _sep = "\x2c\x20";
   bool _assert_exit = true;
+  int _exit_code = 0;
   
   std::string _c_red     = "\033[0;31m";
   std::string _c_green   = "\033[0;32m";
@@ -70,6 +71,11 @@ public:
   logger& assert_noexit()
   {
     _assert_exit = false;
+    return *this;
+  }
+  logger &set_exit_code(int _code)
+  {
+    _exit_code = _code;
     return *this;
   }
 
@@ -166,7 +172,7 @@ public:
         .log(_c_reset).endl();
       if (_info_str != "")
         hint("detail", "magenta").hint(_info_str)(_info...);
-      if (_assert_exit) exit(0);
+      if (_assert_exit) exit(_exit_code);
     }
     return *this;
   }

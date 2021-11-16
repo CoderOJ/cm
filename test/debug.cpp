@@ -1,8 +1,10 @@
-#include "../debug"
+#include "../debug.hpp"
 #include <bits/stdc++.h>
 
 int main()
 {
+  cm::impl::see_logger.set_exit_code(0);
+
   int x = 1;
   see(x, x, x);
   see(std::initializer_list<int>{x, x, x});
