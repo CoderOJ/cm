@@ -45,10 +45,7 @@ template <> struct type_list_t<>
 
 template <i64 rr> struct range_t
 {
-  static constexpr i64 r()
-  {
-    return rr;
-  }
+  static constexpr i64 r() { return rr; }
 };
 
 struct intm_tag
@@ -61,16 +58,11 @@ template <int __mod, i64 __r> struct intm_r : public intm_tag
   using range = range_t<__r>;
 
   i64 a;
-  intm_r(i64 a) : a(a)
-  {
-  }
-  i64 eval() const
-  {
-    return a;
-  }
+  constexpr intm_r(i64 a) : a(a) {}
+  constexpr i64 eval() const { return a; }
   template <class integer, typename = typename std::enable_if<
                                std::is_integral<integer>::value>::type>
-  explicit operator integer()
+  constexpr explicit operator integer()
   {
     return static_cast<integer>(eval());
   }
@@ -93,39 +85,36 @@ template <int __mod> struct intm : public intm_tag
   using range = range_t<mod - 1>;
 
   unsigned int a = 0;
-  i64 eval() const
-  {
-    return static_cast<i64>(a);
-  }
+  constexpr i64 eval() const { return static_cast<i64>(a); }
   template <class integer, typename = typename std::enable_if<
                                std::is_integral<integer>::value>::type>
-  explicit operator integer()
+  constexpr explicit operator integer()
   {
     return static_cast<integer>(eval());
   }
 
-  template <class integer> static auto make_intm(integer x)
+  template <class integer> constexpr static auto make_intm(integer x)
   {
     return intm_r<mod, std::numeric_limits<decltype(x)>::max()>(x);
   }
-  template <class integer> static auto raw(integer x)
+  template <class integer> constexpr static auto raw(integer x)
   {
     return intm_r<mod, mod - 1>(x);
   }
 
 private:
-  template <class intm_t> unsigned int adjust(intm_t);
+  template <class intm_t> constexpr unsigned int adjust(intm_t);
 
 public:
   intm() = default;
   template <class intm_t, typename = typename std::enable_if<
                               std::is_base_of<intm_tag, intm_t>::value>::type>
-  intm(intm_t a) : a(adjust(a))
+  constexpr intm(intm_t a) : a(adjust(a))
   {
   }
   template <class intm_t, typename = typename std::enable_if<std::is_base_of<
                               intm_tag, intm_t>::value>::typ::typee>
-  intm &operator=(intm_t rhs)
+  constexpr intm &operator=(intm_t rhs)
   {
     a = adjust(rhs);
     return *this;
@@ -135,7 +124,7 @@ public:
             typename =
                 typename std::enable_if<std::is_integral<integer>::value>::type,
             typename = void>
-  intm(integer x)
+  constexpr intm(integer x)
   {
     *this = make_intm(x);
   }
@@ -165,10 +154,7 @@ template <int mod, class input_range> struct mm_nothing : public mod_method<mod>
 {
   static constexpr int cost = 0;
   using range = input_range;
-  inline constexpr i64 operator()(i64 a) const
-  {
-    return a;
-  }
+  inline constexpr i64 operator()(i64 a) const { return a; }
 };
 template <int mod, class input_range> struct mm_ifsub : public mod_method<mod>
 {
@@ -195,7 +181,8 @@ template <int mod, class input_range> struct mm_ifsub3 : public mod_method<mod>
 {
   static constexpr int cost = 9;
   using range =
-      typename mm_ifsub<mod, typename mm_ifsub2<mod, input_range>::range>::range;
+      typename mm_ifsub<mod,
+                        typename mm_ifsub2<mod, input_range>::range>::range;
   inline constexpr i64 operator()(i64 a) const
   {
     return mm_ifsub<mod, typename mm_ifsub2<mod, input_range>::range>()(
@@ -206,10 +193,7 @@ template <int mod, class input_range> struct mm_getmod : public mod_method<mod>
 {
   static constexpr int cost = 11;
   using range = range_t<std::min(input_range::r(), mod - (i64)(1))>;
-  inline constexpr i64 operator()(i64 a) const
-  {
-    return a % mod;
-  }
+  inline constexpr i64 operator()(i64 a) const { return a % mod; }
 };
 
 template <int mod, class range>
@@ -280,35 +264,30 @@ struct __getmm_ll<type_list_t<>, rhs_mm_list, fitin_pred>
 
 template <class lhs_t> struct intm_op_neg : public intm_tag
 {
-  intm_op_neg() =delete;
-  intm_op_neg(const intm_op_neg&) =default;
-  intm_op_neg(intm_op_neg&&) =default;
-  intm_op_neg& operator= (intm_op_neg) =delete;
-  intm_op_neg& operator= (intm_op_neg&&) =delete;
+  intm_op_neg() = delete;
+  intm_op_neg(const intm_op_neg &) = default;
+  intm_op_neg(intm_op_neg &&) = default;
+  intm_op_neg &operator=(intm_op_neg) = delete;
+  intm_op_neg &operator=(intm_op_neg &&) = delete;
   static constexpr int mod = lhs_t::mod;
   using range = range_t<(lhs_t::range::r() - 1) / mod * mod + mod>;
   i64 a;
-  intm_op_neg(lhs_t lhs) : a(range::r() - lhs.eval())
-  {
-  }
-  i64 eval() const
-  {
-    return a;
-  }
+  constexpr intm_op_neg(lhs_t lhs) : a(range::r() - lhs.eval()) {}
+  constexpr i64 eval() const { return a; }
   template <class integer, typename = typename std::enable_if<
                                std::is_integral<integer>::value>::type>
-  explicit operator integer()
+  constexpr explicit operator integer()
   {
     return static_cast<integer>(eval());
   }
 };
 template <class lhs_t, class rhs_t> struct intm_op_add : public intm_tag
 {
-  intm_op_add() =delete;
-  intm_op_add(const intm_op_add&) =default;
-  intm_op_add(intm_op_add&&) =default;
-  intm_op_add& operator= (intm_op_add) =delete;
-  intm_op_add& operator= (intm_op_add&&) =delete;
+  intm_op_add() = delete;
+  intm_op_add(const intm_op_add &) = default;
+  intm_op_add(intm_op_add &&) = default;
+  intm_op_add &operator=(intm_op_add) = delete;
+  intm_op_add &operator=(intm_op_add &&) = delete;
   static_assert(lhs_t::mod == rhs_t::mod, "");
   static constexpr int mod = lhs_t::mod;
 
@@ -326,28 +305,25 @@ private:
 
 public:
   using range = range_t<lhs_mm_t::range::r() + rhs_mm_t::range::r()>;
-  intm_op_add(lhs_t lhs, rhs_t rhs)
+  constexpr intm_op_add(lhs_t lhs, rhs_t rhs)
       : a(lhs_mm_t()(lhs.eval()) + rhs_mm_t()(rhs.eval()))
   {
   }
-  i64 eval() const
-  {
-    return a;
-  }
+  constexpr i64 eval() const { return a; }
   template <class integer, typename = typename std::enable_if<
                                std::is_integral<integer>::value>::type>
-  explicit operator integer()
+  constexpr explicit operator integer()
   {
     return static_cast<integer>(eval());
   }
 };
 template <class lhs_t, class rhs_t> struct intm_op_mul : public intm_tag
 {
-  intm_op_mul() =delete;
-  intm_op_mul(const intm_op_mul&) =default;
-  intm_op_mul(intm_op_mul&&) =default;
-  intm_op_mul& operator= (intm_op_mul) =delete;
-  intm_op_mul& operator= (intm_op_mul&&) =delete;
+  intm_op_mul() = delete;
+  intm_op_mul(const intm_op_mul &) = default;
+  intm_op_mul(intm_op_mul &&) = default;
+  intm_op_mul &operator=(intm_op_mul) = delete;
+  intm_op_mul &operator=(intm_op_mul &&) = delete;
   static_assert(lhs_t::mod == rhs_t::mod, "");
   static constexpr int mod = lhs_t::mod;
 
@@ -365,17 +341,14 @@ private:
 
 public:
   using range = range_t<lhs_mm_t::range::r() * rhs_mm_t::range::r()>;
-  intm_op_mul(lhs_t lhs, rhs_t rhs)
+  constexpr intm_op_mul(lhs_t lhs, rhs_t rhs)
       : a(lhs_mm_t()(lhs.eval()) * rhs_mm_t()(rhs.eval()))
   {
   }
-  i64 eval()
-  {
-    return a;
-  }
+  constexpr i64 eval() { return a; }
   template <class integer, typename = typename std::enable_if<
                                std::is_integral<integer>::value>::type>
-  explicit operator integer()
+  constexpr explicit operator integer()
   {
     return static_cast<integer>(eval());
   }
@@ -387,7 +360,7 @@ template <
         typename std::enable_if<std::is_base_of<intm_tag, lhs_t>::value>::type,
     typename =
         typename std::enable_if<std::is_base_of<intm_tag, rhs_t>::value>::type>
-auto operator+(lhs_t lhs, rhs_t rhs)
+constexpr auto operator+(lhs_t lhs, rhs_t rhs)
 {
   return intm_op_add<lhs_t, rhs_t>(lhs, rhs);
 }
@@ -397,7 +370,7 @@ template <
         typename std::enable_if<std::is_base_of<intm_tag, lhs_t>::value>::type,
     typename =
         typename std::enable_if<std::is_base_of<intm_tag, rhs_t>::value>::type>
-lhs_t &operator+=(lhs_t &lhs, rhs_t rhs)
+constexpr lhs_t &operator+=(lhs_t &lhs, rhs_t rhs)
 {
   return lhs = intm_op_add<lhs_t, rhs_t>(lhs, rhs);
 }
@@ -407,7 +380,7 @@ template <
         typename std::enable_if<std::is_base_of<intm_tag, lhs_t>::value>::type,
     typename =
         typename std::enable_if<std::is_base_of<intm_tag, rhs_t>::value>::type>
-auto operator-(lhs_t lhs, rhs_t rhs)
+constexpr auto operator-(lhs_t lhs, rhs_t rhs)
 {
   return intm_op_add(lhs, intm_op_neg<rhs_t>(rhs));
 }
@@ -417,7 +390,7 @@ template <
         typename std::enable_if<std::is_base_of<intm_tag, lhs_t>::value>::type,
     typename =
         typename std::enable_if<std::is_base_of<intm_tag, rhs_t>::value>::type>
-lhs_t &operator-=(lhs_t &lhs, rhs_t rhs)
+constexpr lhs_t &operator-=(lhs_t &lhs, rhs_t rhs)
 {
   return lhs = intm_op_add(lhs, intm_op_neg<rhs_t>(rhs));
 }
@@ -427,7 +400,7 @@ template <
         typename std::enable_if<std::is_base_of<intm_tag, lhs_t>::value>::type,
     typename =
         typename std::enable_if<std::is_base_of<intm_tag, rhs_t>::value>::type>
-auto operator*(lhs_t lhs, rhs_t rhs)
+constexpr auto operator*(lhs_t lhs, rhs_t rhs)
 {
   return intm_op_mul<lhs_t, rhs_t>(lhs, rhs);
 }
@@ -437,14 +410,14 @@ template <
         typename std::enable_if<std::is_base_of<intm_tag, lhs_t>::value>::type,
     typename =
         typename std::enable_if<std::is_base_of<intm_tag, rhs_t>::value>::type>
-lhs_t &operator*=(lhs_t &lhs, rhs_t rhs)
+constexpr lhs_t &operator*=(lhs_t &lhs, rhs_t rhs)
 {
   return lhs = intm_op_mul<lhs_t, rhs_t>(lhs, rhs);
 }
 
 template <int mod>
 template <class intm_t>
-unsigned int intm<mod>::adjust(intm_t intm)
+constexpr unsigned int intm<mod>::adjust(intm_t intm)
 {
   using mm =
       typename __get_mm_adjust<mm_list<mod, typename intm_t::range>>::type;
@@ -453,37 +426,37 @@ unsigned int intm<mod>::adjust(intm_t intm)
 
 template <class lhs_t, class rhs_t,
           typename = typename std::enable_if<lhs_t::mod == rhs_t::mod>::type>
-bool operator<(const lhs_t a, const rhs_t b)
+constexpr bool operator<(const lhs_t a, const rhs_t b)
 {
   return a.eval() < b.eval();
 }
 template <class lhs_t, class rhs_t,
           typename = typename std::enable_if<lhs_t::mod == rhs_t::mod>::type>
-bool operator<=(const lhs_t a, const rhs_t b)
+constexpr bool operator<=(const lhs_t a, const rhs_t b)
 {
   return a.eval() <= b.eval();
 }
 template <class lhs_t, class rhs_t,
           typename = typename std::enable_if<lhs_t::mod == rhs_t::mod>::type>
-bool operator>(const lhs_t a, const rhs_t b)
+constexpr bool operator>(const lhs_t a, const rhs_t b)
 {
   return a.eval() > b.eval();
 }
 template <class lhs_t, class rhs_t,
           typename = typename std::enable_if<lhs_t::mod == rhs_t::mod>::type>
-bool operator>=(const lhs_t a, const rhs_t b)
+constexpr bool operator>=(const lhs_t a, const rhs_t b)
 {
   return a.eval() >= b.eval();
 }
 template <class lhs_t, class rhs_t,
           typename = typename std::enable_if<lhs_t::mod == rhs_t::mod>::type>
-bool operator==(const lhs_t a, const rhs_t b)
+constexpr bool operator==(const lhs_t a, const rhs_t b)
 {
   return a.eval() == b.eval();
 }
 template <class lhs_t, class rhs_t,
           typename = typename std::enable_if<lhs_t::mod == rhs_t::mod>::type>
-bool operator!=(const lhs_t a, const rhs_t b)
+constexpr bool operator!=(const lhs_t a, const rhs_t b)
 {
   return a.eval() != b.eval();
 }
