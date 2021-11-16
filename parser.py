@@ -30,6 +30,9 @@ def parse_file(filename):
     os.chdir(get_dir(filename))
 
     def parse_to_endif(lines, p = True):
+        def is_cm_header_macro(macro_name):
+            return macro_name.startswith("CM_") and macro_name.endswith("_H")
+
         while True:
             try:
                 line = next(lines)
@@ -51,12 +54,14 @@ def parse_file(filename):
                         ls.append("1")
                     _, name, cont = ls
                     macro_list[name] = cont
-                    add_line(line)
+                    if not is_cm_header_macro(name):
+                        add_line(line)
             elif sline.startswith('#undef '):
                 if p:
                     _, name = re.split("\s+", sline, 1)
                     del macro_list[name]
-                    add_line(line)
+                    if not is_cm_header_macro(name):
+                        add_line(line)
             elif sline.startswith('#ifdef '):
                 if p:
                     _, name = re.split("\s+", sline, 1)
