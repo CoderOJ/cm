@@ -1,5 +1,5 @@
 #ifndef CM_DEBUG_H
-#define CM_DEBUG_H 1
+#define CM_DEBUG_H
 
 #include <iostream>
 #include <utility>

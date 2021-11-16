@@ -1,5 +1,5 @@
-#ifndef CM_INTM_ALPHA_H_
-#define CM_INTM_ALPHA_H_
+#ifndef CM_INTM_ALPHA_H
+#define CM_INTM_ALPHA_H
 
 #include <iostream>
 #include <limits>

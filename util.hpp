@@ -1,5 +1,5 @@
 #ifndef CM_UTIL_H
-#define CM_UTIL_H 1
+#define CM_UTIL_H
 
 #include <utility>
 #include <vector>

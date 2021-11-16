@@ -1,5 +1,5 @@
 #ifndef CM_STRING_H
-#define CM_STRING_H 1
+#define CM_STRING_H
 
 #include <iterator>
 #include <utility>
