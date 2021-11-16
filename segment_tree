@@ -1,0 +1,13 @@
+#ifndef CM_SEGMENT_TREE
+#define CM_SEGMENT_TREE
+#include <vector>
+namespace cm{template<bool _1=false>struct segment_tree_node_base{static constexpr bool have_push_down=false;segment_tree_node_base()=default;segment_tree_node_base(int){}segment_tree_node_base(const segment_tree_node_base&,const segment_tree_node_base&){}void push_down(segment_tree_node_base&,segment_tree_node_base&){}};template<>struct segment_tree_node_base<true>{static constexpr bool have_push_down=true;segment_tree_node_base()=default;segment_tree_node_base(int){}segment_tree_node_base(const segment_tree_node_base&,const segment_tree_node_base&){}};template<class _8>struct segment_tree{protected:int l=0,r=0;std::vector<_8>p;void _3(int u,int l,int r){if(r-l==1){p[u]=_8(l);}else{int _9=l+(r-l)/2;_3(u+1,l,_9);_3(u+(_9-l)*2,_9,r);p[u]=_8(p[u+1],p[u+(_9-l)*2]);}}template<class..._4>void _2(int u,int l,int r,int ml,int mr,void(_8::*_5)(_4...),_4..._6){if(ml<=l&&r<=mr){(p[u].*_5)(_6...);}else{int _9=l+(r-l)/2;if(_8::have_push_down)p[u].push_down(p[u+1],p[u+(_9-l)*2]);if(ml<_9)_2(u+1,l,_9,ml,mr,_5,_6...);if(mr>_9)_2(u+(_9-l)*2,_9,r,ml,mr,_5,_6...);p[u]=_8(p[u+1],p[u+(_9-l)*2]);}}_8 _7(int u,int l,int r,int ql,int qr){if(ql<=l&&r<=qr){return p[u];}else{int _9=l+(r-l)/2;if(_8::have_push_down)p[u].push_down(p[u+1],p[u+(_9-l)*2]);if(qr<=_9)return _7(u+1,l,_9,ql,qr);else if(ql>=_9)return _7(u+(_9-l)*2,_9,r,ql,qr);else return _8(_7(u+1,l,_9,ql,qr),_7(u+(_9-l)*2,_9,r,ql,qr));}}public:segment_tree()=default;segment_tree(int r):l(0),r(r),p((r-l)*2-1){_3(0,l,r);}segment_tree(int l,int r):l(l),r(r),p((r-l)*2-1){_3(0,l,r);}template<class..._4>void modify(int ml,int mr,void(_8::*_5)(_4...),_4..._6){
+#ifdef CM_DEBUG_H
+cm_assert(ml>=l,l,r,ml,mr);cm_assert(mr<=r,l,r,ml,mr);cm_assert(ml<mr,l,r,ml,mr);
+#endif
+_2(0,l,r,ml,mr,_5,_6...);}_8 query(int ql,int qr){
+#ifdef CM_DEBUG_H
+cm_assert(ql>=l,l,r,ql,qr);cm_assert(qr<=r,l,r,ql,qr);cm_assert(ql<qr,l,r,ql,qr);
+#endif
+return _7(0,l,r,ql,qr);}};}
+#endif
