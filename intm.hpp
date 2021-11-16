@@ -34,13 +34,16 @@
 namespace cm 
 {
 
-template <INTM_FAST_32 MOD = 998244353>
+template <INTM_FAST_32 _MOD = 998244353>
 class intm 
 {
 
 #if __cplusplus >= 201103L
-  static_assert(MOD * 2 < std::numeric_limits<INTM_FAST_32>::max(), "");
+  static_assert(_MOD * 2 < std::numeric_limits<INTM_FAST_32>::max(), "");
 #endif
+
+public:
+  static constexpr int MOD = _MOD;
 
 protected:
   INTM_FAST_32 a = 0;
