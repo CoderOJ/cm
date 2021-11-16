@@ -1,5 +1,5 @@
-#ifndef CM_INTM_H_
-#define CM_INTM_H_ 1
+#ifndef CM_INTM_H
+#define CM_INTM_H
 #if __cplusplus >= 201103L
 #include <type_traits>
 #endif
