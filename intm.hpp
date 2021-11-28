@@ -89,7 +89,7 @@ public:
   intm() {}
 #endif
 
-  static intm raw(INTM_FAST_32 x)
+  static _CXX11_CONSTEXPR intm raw(INTM_FAST_32 x)
   {
     return intm(x, 0);
   }

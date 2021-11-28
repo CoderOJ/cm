@@ -34,7 +34,7 @@ intm()=default;
 #else
 intm(){}
 #endif
-static intm raw(INTM_FAST_32 x){return intm(x,0);}_7 _6 intm(int a):a(static_cast<INTM_FAST_32>(_4(a%MOD))){}_7 _6 intm(long a):a(static_cast<INTM_FAST_32>(_4(a%MOD))){}_7 _6 intm(long long a):a(static_cast<INTM_FAST_32>(_4(a%MOD))){}_7 _6 intm(unsigned int a):a(static_cast<INTM_FAST_32>(a%MOD)){}_7 _6 intm(unsigned long a):a(static_cast<INTM_FAST_32>(a%MOD)){}_7 _6 intm(unsigned long long a):a(static_cast<INTM_FAST_32>(a%MOD)){}template<class _8>_7 _6 CXX11_EXPLICIT operator _8()const{return a;}_7 friend std::ostream&operator<<(std::ostream&out,const intm rhs){
+static _6 intm raw(INTM_FAST_32 x){return intm(x,0);}_7 _6 intm(int a):a(static_cast<INTM_FAST_32>(_4(a%MOD))){}_7 _6 intm(long a):a(static_cast<INTM_FAST_32>(_4(a%MOD))){}_7 _6 intm(long long a):a(static_cast<INTM_FAST_32>(_4(a%MOD))){}_7 _6 intm(unsigned int a):a(static_cast<INTM_FAST_32>(a%MOD)){}_7 _6 intm(unsigned long a):a(static_cast<INTM_FAST_32>(a%MOD)){}_7 _6 intm(unsigned long long a):a(static_cast<INTM_FAST_32>(a%MOD)){}template<class _8>_7 _6 CXX11_EXPLICIT operator _8()const{return a;}_7 friend std::ostream&operator<<(std::ostream&out,const intm rhs){
 #ifdef CM_DEBUG
 out<<pretty(rhs.a);return out;
 #else
