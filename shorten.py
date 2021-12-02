@@ -67,7 +67,7 @@ def get_replaces(tokens):
             result[t] = next(r_token)
     return result
 
-def do_file(file, min_filename):
+def do_file(file, min_filename, relable = True):
 
     def replace_rec(code, pat, rep):
         while code.find(pat) != -1:
@@ -90,13 +90,19 @@ def do_file(file, min_filename):
         if cur != "":
             res_lines.append(cur)
 
-    for line in file:
-        line = line.split("//")[0]
-        line = line.strip(" \n")
-
+    get_line = iter(file)
+    for line in get_line:
+        while line.endswith("\\"):
+            line = line[:-1].strip(" ") + " " + next(get_line).strip(" ")
+        line = list(map(lambda s: s.strip(" "), line.split("//", 1)))
+        if len(line) < 2:
+            line.append("")
+        [line, comment] = line
+        if comment == "relable off":
+            relable = False
         if line == "":
             continue
-        elif line[0] == "#":
+        if line.startswith("#"):
             refresh(res_lines, cur)
             cur = ""
             res_lines.append(line)
@@ -105,8 +111,9 @@ def do_file(file, min_filename):
     refresh(res_lines, cur)
 
     res = "\n".join(res_lines)
-    tr = get_replaces(get_tokens(res))
-    res = replace_tokens(res, tr)
+    if relable:
+        tr = get_replaces(get_tokens(res))
+        res = replace_tokens(res, tr)
 
     if min_filename != None:
         output = open(min_filename, "w")
@@ -119,5 +126,5 @@ if __name__ == "__main__":
     for file in files:
         if file.endswith(".hpp") and not file.endswith(".min.hpp"):
             min_filename = file[:-4]
-            lines = open(file).readlines()
+            lines = map(lambda s: s.strip("\n"), open(file).readlines())
             do_file(lines, min_filename)
