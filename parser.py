@@ -53,6 +53,8 @@ def parse_file(filename):
                     if len(ls) < 3:
                         ls.append("1")
                     _, name, cont = ls
+                    if name.find('(') != -1:
+                        name = name[0 : name.find('(')]
                     macro_list[name] = cont
                     if not is_cm_header_macro(name):
                         add_line(line)
