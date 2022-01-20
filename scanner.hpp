@@ -11,10 +11,10 @@ template <class _Type, size_t _buf_size>
 class buffer_reader
 {
 protected:
-  FILE *       src;
+  FILE        *src;
   _Type *const buff;
-  _Type *      buff_end;
-  _Type *      buff_pos;
+  _Type       *buff_end;
+  _Type       *buff_pos;
 
   void _flush()
   {
@@ -118,24 +118,6 @@ public:
     return s;
   }
 
-  int next_int()
-  {
-    int sign   = _get_sign();
-    int result = 0;
-    while (isdigit(get()))
-      result = result * 10 + (next() - '0');
-    return sign * result;
-  }
-
-  long long next_long()
-  {
-    int       sign   = _get_sign();
-    long long result = 0;
-    while (isdigit(get()))
-      result = result * 10 + (next() - '0');
-    return sign * result;
-  }
-
   template <class _Integer>
   _Integer next_integer()
   {
@@ -144,6 +126,16 @@ public:
     while (isdigit(get()))
       result = result * _Integer(10) + _Integer(next() - '0');
     return sign * result;
+  }
+
+  int next_int()
+  {
+    return next_integer<int>();
+  }
+
+  long long next_long()
+  {
+    return next_integer<long long>();
   }
 
   double next_double()
