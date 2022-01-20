@@ -306,8 +306,8 @@ struct intm_op_neg : public intm_tag
   intm_op_neg()                    = delete;
   intm_op_neg(const intm_op_neg &) = default;
   intm_op_neg(intm_op_neg &&)      = default;
-  intm_op_neg &        operator=(intm_op_neg) = delete;
-  intm_op_neg &        operator=(intm_op_neg &&) = delete;
+  intm_op_neg         &operator=(intm_op_neg) = delete;
+  intm_op_neg         &operator=(intm_op_neg &&) = delete;
   static constexpr int mod                       = lhs_t::mod;
   using range = range_t<(lhs_t::range::r() - 1) / mod * mod + mod>;
   i64 a;

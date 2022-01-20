@@ -66,7 +66,7 @@ auto intm_pair<_first_t, _second_t>::operator/(const intm_pair &_rhs) const
 }
 
 template <class _first_t, class _second_t>
-std::ostream &operator<<(std::ostream &                 _out,
+std::ostream &operator<<(std::ostream                  &_out,
                          intm_pair<_first_t, _second_t> _rhs)
 {
   _out << "(" << _rhs.first << ", " << _rhs.second << ")";
