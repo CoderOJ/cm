@@ -27,7 +27,7 @@ protected:
   }
 
 public:
-  buffer_reader(FILE *_src) : src(_src), buff(new _Type[_buf_size])
+  explicit buffer_reader(FILE *_src) : src(_src), buff(new _Type[_buf_size])
   {
     _flush();
   }
