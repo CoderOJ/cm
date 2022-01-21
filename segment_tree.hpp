@@ -11,7 +11,6 @@ struct segment_tree_node_base
 {
   static constexpr bool have_push_down = false;
   segment_tree_node_base()             = default;
-  segment_tree_node_base(int) {}
   segment_tree_node_base(const segment_tree_node_base &,
                          const segment_tree_node_base &)
   {
@@ -24,7 +23,6 @@ struct segment_tree_node_base<true>
 {
   static constexpr bool have_push_down = true;
   segment_tree_node_base()             = default;
-  segment_tree_node_base(int) {}
   segment_tree_node_base(const segment_tree_node_base &,
                          const segment_tree_node_base &)
   {
@@ -97,7 +95,7 @@ protected:
 
 public:
   segment_tree() = default;
-  segment_tree(int r) : l(0), r(r), p((r - l) * 2 - 1)
+  explicit segment_tree(int r) : l(0), r(r), p((r - l) * 2 - 1)
   {
     _init(0, l, r);
   }
