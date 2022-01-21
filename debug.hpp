@@ -32,7 +32,7 @@ private:
   std::string _c_cyan_bold    = "\033[1;36m";
   std::string _c_reset        = "\033[0m";
 
-  std::string _get_color(std::string _name)
+  std::string _get_color(const std::string &_name)
   {
     if (_name == "red")
       return _c_red;
@@ -64,7 +64,7 @@ private:
   }
 
 public:
-  logger(std::ostream &_out) : _out(&_out) {}
+  explicit logger(std::ostream &_out) : _out(&_out) {}
 
   logger &set_ostream(std::ostream &_out)
   {
