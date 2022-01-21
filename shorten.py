@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import sys
 import re
 from os import popen
 
@@ -76,7 +75,7 @@ def do_file(file, min_filename, relable = True):
 
     def compress(code):
         code = code.strip(" \n")
-        
+
         no_space = " {}()[]<>;,.+-*/%!^&|=?:"
         for c in no_space:
             code = replace_rec(code, " " + c, c)
