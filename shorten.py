@@ -9,6 +9,7 @@ token_keep = [
     "__FUNCTION__",
     "__cplusplus",
     "__attribute__",
+    "__gcd",
 ]
 
 def get_tokens(code):
