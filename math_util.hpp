@@ -93,21 +93,14 @@ struct math_util
   public:
     void require(int n)
     {
-      inv.require(n);
-      n++;
+      fac.require(n);
       int c = static_cast<int>(_ifac.size());
-      if (c < n)
+      if (n > c)
       {
-        _ifac.resize(n);
-        if (c == 0)
-        {
-          _ifac[0] = 1;
-          c        = 1;
-        }
-        for (int i = c; i < n; i++)
-        {
-          _ifac[i] = _ifac[i - 1] * inv(i);
-        }
+        _ifac.resize(n + 1);
+        _ifac[n] = fac(n).inv();
+        for (int i = n - 1; i >= c; i--)
+          _ifac[i] = _ifac[i + 1] * _Integer(i + 1);
       }
     }
     _Integer operator()(int i) const

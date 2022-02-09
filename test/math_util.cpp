@@ -22,6 +22,7 @@ int main()
   cm_assert(mu::binom(5, 2) == 10);
   cm_assert(mu::binom(6, 3) == 20);
   cm_assert(mu::binom.get(200, 2) == 19900);
+  cm_assert(mu::binom.get(200, 0) == 1);
 
   return 0;
 }
