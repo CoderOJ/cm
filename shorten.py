@@ -10,6 +10,14 @@ token_keep = [
     "__cplusplus",
     "__attribute__",
     "__gcd",
+    "__builtin_popcount",
+    "__builtin_popcountll",
+    "__builtin_clz",
+    "__builtin_clzll",
+    "__builtin_ctz",
+    "__builtin_ctzll",
+    "__int128_t",
+    "__uint128_t",
 ]
 
 def get_tokens(code):
