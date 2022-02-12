@@ -95,7 +95,7 @@ struct math_util
     {
       fac.require(n);
       int c = static_cast<int>(_ifac.size());
-      if (n > c)
+      if (n + 1 > c)
       {
         _ifac.resize(n + 1);
         _ifac[n] = fac(n).inv();
