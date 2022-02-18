@@ -10,56 +10,45 @@
 namespace cm
 {
 
+#ifdef CM_DEBUG
+
 class logger
 {
 private:
   std::ostream *_out;
-  std::string   _sep         = "\x2c\x20";
-  bool          _assert_exit = true;
-  int           _exit_code   = 0;
-
-  std::string _c_red          = "\033[0;31m";
-  std::string _c_green        = "\033[0;32m";
-  std::string _c_yellow       = "\033[0;33m";
-  std::string _c_blue         = "\033[0;34m";
-  std::string _c_magenta      = "\033[0;35m";
-  std::string _c_cyan         = "\033[0;36m";
-  std::string _c_red_bold     = "\033[1;31m";
-  std::string _c_green_bold   = "\033[1;32m";
-  std::string _c_yellow_bold  = "\033[1;33m";
-  std::string _c_blue_bold    = "\033[1;34m";
-  std::string _c_magenta_bold = "\033[1;35m";
-  std::string _c_cyan_bold    = "\033[1;36m";
-  std::string _c_reset        = "\033[0m";
+  std::string   _sep          = "\x2c\x20";
+  int           _assert_level = 0;
+  bool          _assert_exit  = true;
+  int           _exit_code    = 0;
 
   std::string _get_color(const std::string &_name)
   {
     if (_name == "red")
-      return _c_red;
+      return "\033[0;31m";
     if (_name == "green")
-      return _c_green;
+      return "\033[0;32m";
     if (_name == "yellow")
-      return _c_yellow;
+      return "\033[0;33m";
     if (_name == "blue")
-      return _c_blue;
+      return "\033[0;34m";
     if (_name == "magenta")
-      return _c_magenta;
+      return "\033[0;35m";
     if (_name == "cyan")
-      return _c_cyan;
+      return "\033[0;36m";
     if (_name == "red bold")
-      return _c_red_bold;
+      return "\033[1;31m";
     if (_name == "green bold")
-      return _c_green_bold;
+      return "\033[1;32m";
     if (_name == "yellow bold")
-      return _c_yellow_bold;
+      return "\033[1;33m";
     if (_name == "blue bold")
-      return _c_blue_bold;
+      return "\033[1;34m";
     if (_name == "magenta bold")
-      return _c_magenta_bold;
+      return "\033[1;35m";
     if (_name == "cyan bold")
-      return _c_cyan_bold;
+      return "\033[1;36m";
     if (_name == "reset")
-      return _c_reset;
+      return "\033[0m";
     return "";
   }
 
@@ -74,6 +63,18 @@ public:
   logger &set_sep(const std::string &_sep)
   {
     this->_sep = _sep;
+    return *this;
+  }
+  logger &assert_push_enable()
+  {
+    _assert_level -= 1;
+    if (_assert_level)
+      _assert_level = 0;
+    return *this;
+  }
+  logger &assert_push_disable()
+  {
+    _assert_level += 1;
     return *this;
   }
   logger &assert_exit()
@@ -159,7 +160,7 @@ public:
   logger &hint(const T &x, std::string _color = "cyan")
   {
     _color = _get_color(_color);
-    return log(_color).log(x).log("\x3a\x20").log(_c_reset);
+    return log(_color).log(x).log("\x3a\x20").log(_get_color("reset"));
   }
 
   template <class... T>
@@ -169,21 +170,21 @@ public:
   }
 
   template <class... T>
-  logger &_assert(const std::string &_file, int _line, const std::string &_raw,
+  logger &assert_(const std::string &_file, int _line, const std::string &_raw,
                   bool _value, const std::string &_info_str, T... _info)
   {
-    if (!_value)
+    if (_assert_level == 0 && !_value)
     {
-      endl();
-      hint(_file, "magenta")
+      endl()
+          .hint(_file, "magenta")
           .hint(_line, "magenta")
-          .log(_c_yellow)
+          .log(_get_color("yellow"))
           .log("Assertion `")
-          .log(_c_yellow_bold)
+          .log(_get_color("yellow bold"))
           .log(_raw)
-          .log(_c_yellow)
+          .log(_get_color("yellow"))
           .log("` failed")
-          .log(_c_reset)
+          .log(_get_color("reset"))
           .endl();
       if (_info_str != "")
         hint("detail", "magenta").hint(_info_str)(_info...);
@@ -194,18 +195,80 @@ public:
   }
 };
 
+#else
+
+class logger()
+{
+public:
+  logger(std::ostream &) = default;
+  logger &set_ostream(std::ostream & _out)
+  {
+    return *this;
+  }
+  logger &set_sep(const std::string &_sep)
+  {
+    return *this;
+  }
+  logger &assert_push_enable()
+  {
+    return *this;
+  }
+  logger &assert_push_disable()
+  {
+    return *this;
+  }
+  logger &assert_exit()
+  {
+    return *this;
+  }
+  logger &assert_noexit()
+  {
+    return *this;
+  }
+  logger &set_exit_code(int)
+  {
+    return *this;
+  }
+  logger &endl()
+  {
+    return *this;
+  }
+  template <class... T>
+  logger &log(T...)
+  {
+    return *this;
+  }
+  template <class T>
+  logger &hint(T...)
+  {
+    return *this;
+  }
+  template <class... T>
+  logger &operator()(T...);
+  {
+    return *this;
+  }
+  template <class... T>
+  logger &assert_(T...)
+  {
+    return *this;
+  }
+};
+
+#endif
+
 namespace impl
 {
-logger see_logger(std::cout);
+logger cm_logger(std::cout);
 }
 
 } // namespace cm
 
 // clang-format off
 #ifdef CM_DEBUG
-#define see(arg...) cm::impl::see_logger.hint(#arg)(arg)
-#define asee(arg...) cm::impl::see_logger.hint(__FILE__, "magenta").hint(__LINE__, "magenta").hint(#arg)(arg)
-#define cm_assert(val, arg...) cm::impl::see_logger._assert(__FILE__, __LINE__, #val, val, #arg, ##arg)
+#define see(arg...) cm::impl::cm_logger.hint(#arg)(arg)
+#define asee(arg...) cm::impl::cm_logger.hint(__FILE__, "magenta").hint(__LINE__, "magenta").hint(#arg)(arg)
+#define cm_assert(val, arg...) cm::impl::cm_logger.assert_(__FILE__, __LINE__, #val, val, #arg, ##arg)
 #else
 #define see(...)
 #define asee(...)

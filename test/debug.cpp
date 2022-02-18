@@ -3,7 +3,7 @@
 
 int main()
 {
-  cm::impl::see_logger.set_exit_code(0);
+  cm::impl::cm_logger.set_exit_code(0);
 
   int x = 1;
   see(x, x, x);
@@ -14,10 +14,10 @@ int main()
   asee("test pair")(
       std::pair<std::vector<int>, std::set<int>>{{1, 2, 3}, {3, 2, 1}});
 
-  cm::impl::see_logger.assert_noexit();
+  cm::impl::cm_logger.assert_noexit();
   cm_assert(x == x, "x is x");
   cm_assert(x != x, "x is not x", x);
-  cm::impl::see_logger.assert_exit();
+  cm::impl::cm_logger.assert_exit();
   cm_assert(x != x, "x is not x", x, x);
   cm_assert(x != x, "x is not x", x, x, x);
 }
