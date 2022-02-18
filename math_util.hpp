@@ -1,6 +1,8 @@
 #ifndef CM_MATH_BASE_H
 #define CM_MATH_BASE_H
 
+#include "./debug"
+#include <algorithm>
 #include <vector>
 
 namespace cm
@@ -145,6 +147,114 @@ template <class _Integer>
 typename math_util<_Integer>::_ifac_t math_util<_Integer>::ifac;
 template <class _Integer>
 typename math_util<_Integer>::_binom_t math_util<_Integer>::binom;
+
+int clz(int x)
+{
+  cm_assert(x != 0);
+  return __builtin_clz(x);
+}
+
+int clz(long x)
+{
+  cm_assert(x != 0);
+  return __builtin_clzl(x);
+}
+
+int clz(long long x)
+{
+  cm_assert(x != 0);
+  return __builtin_clzll(x);
+}
+
+unsigned int clz(unsigned int x)
+{
+  cm_assert(x != 0);
+  return __builtin_clz(x);
+}
+
+unsigned int clz(unsigned long x)
+{
+  cm_assert(x != 0);
+  return __builtin_clzl(x);
+}
+
+unsigned int clz(unsigned long long x)
+{
+  cm_assert(x != 0);
+  return __builtin_clzll(x);
+}
+
+int ctz(int x)
+{
+  cm_assert(x != 0);
+  return __builtin_ctz(x);
+}
+
+int ctz(long x)
+{
+  cm_assert(x != 0);
+  return __builtin_ctzl(x);
+}
+
+int ctz(long long x)
+{
+  cm_assert(x != 0);
+  return __builtin_ctzll(x);
+}
+
+unsigned int ctz(unsigned int x)
+{
+  cm_assert(x != 0);
+  return __builtin_ctz(x);
+}
+
+unsigned int ctz(unsigned long x)
+{
+  cm_assert(x != 0);
+  return __builtin_ctzl(x);
+}
+
+unsigned int ctz(unsigned long long x)
+{
+  cm_assert(x != 0);
+  return __builtin_ctzll(x);
+}
+
+template <class _Int>
+_Int gcd(_Int a, _Int b)
+{
+  cm_assert(a >= 0);
+  cm_assert(b >= 0);
+
+  if (a == 0)
+    return b;
+  if (b == 0)
+    return a;
+
+  int az = ctz(a);
+  int bz = ctz(b);
+  int sh = std::min(az, bz);
+  b >>= bz;
+
+  while (a != 0)
+  {
+    a >>= az;
+    _Int diff = a - b;
+    _Int va   = a > b ? diff : -diff;
+    _Int vb   = std::min(a, b);
+    a         = va;
+    b         = vb;
+
+    // to disable ctz zero warning
+#ifdef CM_DEBUG
+    az = diff == 0 ? 0 : ctz(diff);
+#else
+    az = ctz(diff);
+#endif
+  }
+
+  return b << sh;
+}
 
 } // namespace cm
 

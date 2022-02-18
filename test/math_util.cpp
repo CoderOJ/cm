@@ -2,6 +2,8 @@
 #include "../debug.hpp"
 #include "../intm.hpp"
 
+#include <algorithm>
+
 int main()
 {
   constexpr int MOD = 998244353;
@@ -23,6 +25,15 @@ int main()
   cm_assert(mu::binom(6, 3) == 20);
   cm_assert(mu::binom.get(200, 2) == 19900);
   cm_assert(mu::binom.get(200, 0) == 1);
+
+  for (int i = 0; i <= 100; i++)
+    for (int j = 10000; j <= 10100; j++)
+    {
+      cm_assert(cm::gcd(i, j) == std::__gcd(i, j), i, j);
+      cm_assert(cm::gcd(j, i) == std::__gcd(i, j), i, j);
+      cm_assert(cm::gcd<unsigned>(i, j) == std::__gcd<unsigned>(i, j), i, j);
+      cm_assert(cm::gcd<unsigned>(i, j) == std::__gcd<unsigned>(i, j), i, j);
+    }
 
   return 0;
 }
