@@ -4,7 +4,7 @@
 
 int main()
 {
-  cm::impl::see_logger.set_exit_code(0);
+  cm::impl::cm_logger.set_exit_code(0);
 
   using Int = cm::intm<998244353>;
   Int a = 1, b = 2;

@@ -1,6 +1,8 @@
 #ifndef CM_INTM_H
 #define CM_INTM_H
 
+#include "./debug"
+
 #if __cplusplus >= 201103L
 #include <type_traits>
 #endif
@@ -134,9 +136,7 @@ public:
   }
   _ATTR_INLINE _CXX14_CONSTEXPR intm inv() const
   {
-#ifdef CM_DEBUG_H
     cm_assert(a != 0, "warning: 0 do not have inv");
-#endif
     return raw(__impl_pow(a, MOD - 2));
   }
 
