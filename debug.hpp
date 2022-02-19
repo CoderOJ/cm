@@ -197,15 +197,15 @@ public:
 
 #else
 
-class logger()
+class logger
 {
 public:
-  logger(std::ostream &) = default;
-  logger &set_ostream(std::ostream & _out)
+  logger(std::ostream &) {}
+  logger &set_ostream(std::ostream &)
   {
     return *this;
   }
-  logger &set_sep(const std::string &_sep)
+  logger &set_sep(const std::string &)
   {
     return *this;
   }
@@ -244,7 +244,7 @@ public:
     return *this;
   }
   template <class... T>
-  logger &operator()(T...);
+  logger &operator()(T...)
   {
     return *this;
   }
