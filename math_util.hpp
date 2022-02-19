@@ -236,21 +236,17 @@ _Int gcd(_Int a, _Int b)
   int sh = std::min(az, bz);
   b >>= bz;
 
-  while (a != 0)
+  while (true)
   {
     a >>= az;
+    if (a == b)
+      return a << sh;
     _Int diff = a - b;
     _Int va   = a > b ? diff : -diff;
     _Int vb   = std::min(a, b);
+    az        = ctz(diff);
     a         = va;
     b         = vb;
-
-    // to disable ctz zero warning
-#ifdef CM_DEBUG
-    az = diff == 0 ? 0 : ctz(diff);
-#else
-    az = ctz(diff);
-#endif
   }
 
   return b << sh;
