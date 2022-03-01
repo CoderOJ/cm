@@ -95,6 +95,26 @@ protected:
     }
   }
 
+  template <class _Pred>
+  int _lower_bound(int u, int l, int r, _Pred _pred, _NodeType _prev)
+  {
+    if (r - l == 1)
+    {
+      return l;
+    }
+    else
+    {
+      int _mid = l + (r - l) / 2;
+      if (_NodeType::have_push_down)
+        p[u].push_down(p[u + 1], p[u + (_mid - l) * 2]);
+      _NodeType _attempt = _NodeType(_prev, p[u + 1]);
+      if (_pred(_attempt))
+        return _lower_bound(u + (_mid - l) * 2, _mid, r, _pred, _attempt);
+      else
+        return _lower_bound(u + 1, l, _mid, _pred, _prev);
+    }
+  }
+
 public:
   segment_tree() = default;
   explicit segment_tree(int r) : l(0), r(r), p((r - l) * 2 - 1)
@@ -115,7 +135,8 @@ public:
     cm_assert(mr <= r, l, r, ml, mr);
     cm_assert(ml < mr, l, r, ml, mr);
 #endif
-    _modify(0, l, r, ml, mr, _pred, _param...);
+    if (ml < mr)
+      _modify(0, l, r, ml, mr, _pred, _param...);
   }
 
   _NodeType query(int ql, int qr)
@@ -123,9 +144,21 @@ public:
 #ifdef CM_DEBUG_H
     cm_assert(ql >= l, l, r, ql, qr);
     cm_assert(qr <= r, l, r, ql, qr);
-    cm_assert(ql < qr, l, r, ql, qr);
+    cm_assert(ql <= qr, l, r, ql, qr);
 #endif
-    return _query(0, l, r, ql, qr);
+    if (ql >= qr)
+      return _NodeType();
+    else
+      return _query(0, l, r, ql, qr);
+  }
+
+  template <class _Pred>
+  int lower_bound(_Pred _pred, _NodeType _prev = _NodeType())
+  {
+    if (_pred(p[0]))
+      return r;
+    else
+      return _lower_bound(0, l, r, _pred, _prev);
   }
 };
 
