@@ -62,6 +62,34 @@ _INLINE std::pair<A, B> &operator-=(std::pair<A, B>       &lhs,
   lhs.second -= rhs.second;
   return lhs;
 }
+template <class A, class B>
+_INLINE std::pair<A, B> operator*(const std::pair<A, B> &lhs,
+                                  const std::pair<A, B> &rhs)
+{
+  return std::make_pair(lhs.first * rhs.first, lhs.second * rhs.second);
+}
+template <class A, class B>
+_INLINE std::pair<A, B> operator/(const std::pair<A, B> &lhs,
+                                  const std::pair<A, B> &rhs)
+{
+  return std::make_pair(lhs.first / rhs.first, lhs.second / rhs.second);
+}
+template <class A, class B>
+_INLINE std::pair<A, B> &operator*=(std::pair<A, B>       &lhs,
+                                    const std::pair<A, B> &rhs)
+{
+  lhs.first *= rhs.first;
+  lhs.second *= rhs.second;
+  return lhs;
+}
+template <class A, class B>
+_INLINE std::pair<A, B> &operator/=(std::pair<A, B>       &lhs,
+                                    const std::pair<A, B> &rhs)
+{
+  lhs.first /= rhs.first;
+  lhs.second /= rhs.second;
+  return lhs;
+}
 
 template <class T>
 std::vector<T> &operator+=(std::vector<T> &a, const std::vector<T> &b)
