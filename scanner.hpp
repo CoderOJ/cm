@@ -52,7 +52,8 @@ public:
 
   ~buffer_reader()
   {
-    fclose(src);
+    if (src != stdin)
+      fclose(src);
     delete[] buff;
   }
 };
