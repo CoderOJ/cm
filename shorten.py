@@ -77,7 +77,7 @@ def get_replaces(tokens):
             result[t] = next(r_token)
     return result
 
-def do_file(file, min_filename, relable = True):
+def do_file(file, min_filename, relabel = True):
 
     def replace_rec(code, pat, rep):
         while code.find(pat) != -1:
@@ -108,8 +108,8 @@ def do_file(file, min_filename, relable = True):
         if len(line) < 2:
             line.append("")
         [line, comment] = line
-        if comment == "relable off":
-            relable = False
+        if comment == "relabel off":
+            relabel = False
         if line == "":
             continue
         if line.startswith("#"):
@@ -121,7 +121,7 @@ def do_file(file, min_filename, relable = True):
     refresh(res_lines, cur)
 
     res = "\n".join(res_lines)
-    if relable:
+    if relabel:
         tr = get_replaces(get_tokens(res))
         res = replace_tokens(res, tr)
 

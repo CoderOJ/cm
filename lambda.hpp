@@ -1,4 +1,4 @@
-// relable off
+// relabel off
 
 #ifndef CM_LAMBDA_H
 #define CM_LAMBDA_H
