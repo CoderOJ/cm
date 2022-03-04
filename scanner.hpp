@@ -22,7 +22,8 @@ protected:
     buff_pos = buff;
     if (buff_end == buff)
     {
-      *buff_end = '\0';
+      *buff_end = '\n';
+      buff_end++;
     }
   }
 
