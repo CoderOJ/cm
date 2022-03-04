@@ -85,7 +85,7 @@ struct lct_t
     void    make_root();
 
     template <class Pred>
-    iterator lower_bound(Pred);
+    iterator lower_bound(Pred, info_t = info_t());
   };
 
   std::vector<node_t> p;
@@ -466,11 +466,11 @@ void lct_t<info_t>::node_t::make_root()
 
 template <class info_t>
 template <class Pred>
-typename lct_t<info_t>::node_t *lct_t<info_t>::node_t::lower_bound(Pred pred)
+typename lct_t<info_t>::node_t *lct_t<info_t>::node_t::lower_bound(Pred   pred,
+                                                                   info_t prev)
 {
   node_t *u = this;
   node_t *res;
-  info_t  prev;
   while (true)
   {
     u->push_down();
