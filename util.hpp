@@ -1,6 +1,7 @@
 #ifndef CM_UTIL_H
 #define CM_UTIL_H
 
+#include <array>
 #include <utility>
 #include <vector>
 
@@ -28,6 +29,26 @@ struct once_t
     return _once ? (_once = false, true) : false;
   }
 };
+
+namespace impl
+{
+
+template <class T, std::size_t n0, std::size_t... n1>
+struct __array
+{
+  using type = std::array<typename __array<T, n1...>::type, n0>;
+};
+
+template <class T, std::size_t n0>
+struct __array<T, n0>
+{
+  using type = std::array<T, n0>;
+};
+
+} // namespace impl
+
+template <class T, std::size_t... n0>
+using array = typename impl::__array<T, n0...>::type;
 
 } // namespace cm
 

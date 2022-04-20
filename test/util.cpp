@@ -1,4 +1,4 @@
-#include "../util"
+#include "../util.hpp"
 #include "../debug"
 
 AT_INIT({ see("before main"); });
@@ -6,6 +6,14 @@ AT_EXIT({ see("after main"); });
 
 int main()
 {
+  {
+    cm::array<int, 3, 3, 3> arr;
+    arr[0][0][0] = 1;
+  }
+  {
+    cm::array<int, 3> arr;
+    arr[0] = 1;
+  }
 
   AT_INIT({ see("hello"); });
   AT_INIT({ see("hello2"); });
