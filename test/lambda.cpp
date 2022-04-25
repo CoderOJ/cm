@@ -4,7 +4,7 @@
 #include <functional>
 #include <iostream>
 
-using namespace cm::lambda::placehoders;
+using namespace cm::lambda::placeholders;
 
 int main()
 {

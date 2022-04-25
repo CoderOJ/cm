@@ -157,7 +157,7 @@ __lambda_define_sop(-, neg);
 
 } // namespace __impl
 
-namespace placehoders
+namespace placeholders
 {
 
 template <int k>
@@ -177,7 +177,7 @@ placeholder<3> _3;
 placeholder<4> _4;
 placeholder<5> _5;
 
-} // namespace placehoders
+} // namespace placeholders
 
 } // namespace cm::lambda
 
