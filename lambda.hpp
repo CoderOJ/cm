@@ -66,8 +66,8 @@ struct lambda_reference : public lambda_base
     static_assert(std::is_base_of<lambda_base, Ta>::value, "");                \
     static_assert(std::is_base_of<lambda_base, Tb>::value, "");                \
                                                                                \
-    const Ta &a;                                                               \
-    const Tb &b;                                                               \
+    Ta a;                                                                      \
+    Tb b;                                                                      \
     lambda_bop_##op_name(const Ta &a, const Tb &b) : a(a), b(b) {}             \
                                                                                \
     template <class... T>                                                      \
@@ -134,7 +134,7 @@ __lambda_define_bop(^, lxor);
   {                                                                            \
     static_assert(std::is_base_of<lambda_base, Ta>::value, "");                \
                                                                                \
-    const Ta &a;                                                               \
+    Ta a;                                                                      \
     lambda_sop_##op_name(const Ta &a) : a(a) {}                                \
                                                                                \
     template <class... T>                                                      \
