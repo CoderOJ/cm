@@ -56,6 +56,8 @@ public:
 
   struct all
   {
+    value_type cl, cr;
+
     struct iterator : public std::iterator<std::input_iterator_tag,
                                            integer_index, integer_index,
                                            const integer_index *, integer_index>
@@ -93,13 +95,19 @@ public:
       }
     };
 
+    all(value_type cl = range_l, value_type cr = range_r) : cl(cl), cr(cr)
+    {
+      cm_assert(range_l <= cl);
+      cm_assert(cr <= range_r);
+    }
+
     iterator begin() const
     {
-      return iterator(range_l);
+      return iterator(cl);
     }
     iterator end() const
     {
-      return iterator(range_r);
+      return iterator(cr);
     }
   };
 
