@@ -16,7 +16,7 @@ struct _integer_index_base
 {
 };
 
-template <class T, T L, T R, int I = 0>
+template <class T, T L, T R>
 struct integer_index : public _integer_index_base
 {
 public:
@@ -107,8 +107,8 @@ protected:
   int _value = range_r;
 };
 
-template <int L, int R, int I = 0>
-using int_index = integer_index<int, L, R, I>;
+template <int L, int R>
+using int_index = integer_index<int, L, R>;
 
 template <class key_type, class value_type>
 struct index_array
