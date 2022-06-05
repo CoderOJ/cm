@@ -112,43 +112,23 @@ _INLINE std::pair<A, B> &operator/=(std::pair<A, B>       &lhs,
   return lhs;
 }
 
-template <class T>
-std::vector<T> &operator+=(std::vector<T> &a, const std::vector<T> &b)
+template <class F>
+struct y_combinate_t
 {
-  a.insert(a.end(), b.begin(), b.end());
-  return a;
-}
-template <class T>
-std::vector<T> &operator+=(std::vector<T> &a, const T &b)
-{
-  a.insert(a.end(), b);
-  return a;
-}
-template <class T>
-std::vector<T> &operator+=(std::vector<T> &a, T &&b)
-{
-  a.insert(a.end(), std::forward<T>(b));
-  return a;
-}
+  F f;
 
-template <class T>
-std::vector<T> operator+(std::vector<T> a, const std::vector<T> &b)
+  template <class... Args>
+  decltype(auto) operator()(Args &&...args) const
+  {
+    return f(*this, std::forward<Args>(args)...);
+  }
+};
+
+template <class F>
+y_combinate_t<std::decay_t<F>> y_combinate(F &&f)
 {
-  a += b;
-  return a;
-}
-template <class T>
-std::vector<T> operator+(std::vector<T> a, T &b)
-{
-  a += b;
-  return a;
-}
-template <class T>
-std::vector<T> operator+(std::vector<T> a, T &&b)
-{
-  a += std::forward<T>(b);
-  return a;
-}
+  return {std::forward<F>(f)};
+};
 
 // clang-format off
 #define M__AT_INIT(line, Pred) struct CM_INNER_ATINIT##line##_t { \
@@ -160,7 +140,7 @@ std::vector<T> operator+(std::vector<T> a, T &&b)
   ~CM_INNER_ATEXIT##line## _t () Pred } CM_INNER_ATEXIT##line
 #define M_AT_EXIT(line, Pred) M__AT_EXIT(line, Pred)
 #define AT_EXIT(Pred) M_AT_EXIT(__LINE__, Pred)
-// clang-format on
+  // clang-format on
 
 #ifdef CM_DEBUG
 #define CONSTRAINT(n, a, b) constexpr auto n = b;

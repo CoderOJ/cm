@@ -16,24 +16,17 @@ int main()
   }
 
   AT_INIT({ see("hello"); });
-  AT_INIT({ see("hello2"); });
   AT_EXIT({ see("good bye"); });
-  AT_EXIT({ see("good bye 2"); });
 
   std::pair<int, int> a(1, 2), b(11, 12);
-  see(a + b);
-  see(a - b);
+  cm_assert(a + b == std::make_pair(1 + 11, 2 + 12));
+  cm_assert(a - b == std::make_pair(1 - 11, 2 - 12));
 
   cm::once_t once;
-  if (once())
-    see(a += b);
-  if (once())
-    see(a += b);
+  cm_assert(once());
+  cm_assert(!once());
 
-  std::vector<int> va{1, 2, 3};
-  asee(va);
-  asee(va + 4);
-  asee(va + std::vector<int>{5, 6});
-  asee(va += std::vector<int>{7, 8});
-  asee(va + va);
+  auto fac = y_combinate(
+      [](auto f, int x) -> int { return x == 0 ? 1 : x * f(x - 1); });
+  cm_assert(fac(5) == 5 * 4 * 3 * 2 * 1);
 }
