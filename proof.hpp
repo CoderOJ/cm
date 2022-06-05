@@ -58,9 +58,7 @@ public:
   {
     value_type cl, cr;
 
-    struct iterator : public std::iterator<std::input_iterator_tag,
-                                           integer_index, integer_index,
-                                           const integer_index *, integer_index>
+    struct iterator
     {
       value_type _value;
 
