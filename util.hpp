@@ -112,6 +112,9 @@ _INLINE std::pair<A, B> &operator/=(std::pair<A, B>       &lhs,
   return lhs;
 }
 
+namespace cm
+{
+
 template <class F>
 struct y_combinate_t
 {
@@ -129,6 +132,8 @@ y_combinate_t<std::decay_t<F>> y_combinate(F &&f)
 {
   return {std::forward<F>(f)};
 };
+
+} // namespace cm
 
 // clang-format off
 #define M__AT_INIT(line, Pred) struct CM_INNER_ATINIT##line##_t { \
