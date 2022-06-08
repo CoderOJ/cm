@@ -112,6 +112,7 @@ _INLINE std::pair<A, B> &operator/=(std::pair<A, B>       &lhs,
   return lhs;
 }
 
+#if __cplusplus >= 201402L
 namespace cm
 {
 
@@ -134,6 +135,7 @@ y_combinate_t<std::decay_t<F>> y_combinate(F &&f)
 };
 
 } // namespace cm
+#endif
 
 // clang-format off
 #define M__AT_INIT(line, Pred) struct CM_INNER_ATINIT##line##_t { \
@@ -145,7 +147,7 @@ y_combinate_t<std::decay_t<F>> y_combinate(F &&f)
   ~CM_INNER_ATEXIT##line## _t () Pred } CM_INNER_ATEXIT##line
 #define M_AT_EXIT(line, Pred) M__AT_EXIT(line, Pred)
 #define AT_EXIT(Pred) M_AT_EXIT(__LINE__, Pred)
-  // clang-format on
+// clang-format on
 
 #ifdef CM_DEBUG
 #define CONSTRAINT(n, a, b) constexpr auto n = b;
