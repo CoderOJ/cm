@@ -59,12 +59,6 @@ public:
   }
 };
 
-#ifdef CM_DEBUG
-using optimal_reader = buffer_reader<char, 1>;
-#else
-using optimal_reader = buffer_reader<char, 1 << 16>;
-#endif
-
 template <class _BufferReader>
 class scanner : protected _BufferReader
 {
@@ -158,5 +152,25 @@ public:
 };
 
 } // namespace cm
+
+#ifdef CM_DEBUG
+
+namespace cm
+{
+using optimal_reader = buffer_reader<char, 1>;
+}
+#define DEFINE_SCANNER(sc, filename) cm::scanner<cm::optimal_reader> sc(stdin);
+
+#else
+
+namespace cm
+{
+using optimal_reader = buffer_reader<char, 1 << 16>;
+}
+
+#define DEFINE_SCANNER(sc, filename)                                           \
+  cm::scanner<cm::optimal_reader> sc(fopen(filename, "r"));
+
+#endif
 
 #endif
