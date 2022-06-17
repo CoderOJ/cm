@@ -1,5 +1,5 @@
-#include "../scanner"
-#include "../debug"
+#include "../scanner.hpp"
+#include "../debug.hpp"
 
 cm::scanner<cm::optimal_reader> sc(fopen("./scanner.in", "r"));
 

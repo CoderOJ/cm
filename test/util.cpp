@@ -1,5 +1,5 @@
 #include "../util.hpp"
-#include "../debug"
+#include "../debug.hpp"
 
 int main()
 {

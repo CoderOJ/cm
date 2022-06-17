@@ -1,6 +1,6 @@
-#include "../string"
-#include "../debug"
-#include "../intm"
+#include "../string.hpp"
+#include "../debug.hpp"
+#include "../intm.hpp"
 
 int main()
 {

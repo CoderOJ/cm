@@ -1,6 +1,6 @@
-#include "../intm_pair"
-#include "../debug"
-#include "../intm"
+#include "../intm_pair.hpp"
+#include "../debug.hpp"
+#include "../intm.hpp"
 
 int main()
 {

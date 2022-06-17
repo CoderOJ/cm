@@ -1,4 +1,4 @@
-#include "../intm"
+#include "../intm.hpp"
 #include "../debug.hpp"
 #include <cassert>
 

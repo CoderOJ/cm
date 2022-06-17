@@ -1,5 +1,5 @@
 #include "../lambda.hpp"
-#include "../debug"
+#include "../debug.hpp"
 #include <algorithm>
 #include <functional>
 #include <iostream>

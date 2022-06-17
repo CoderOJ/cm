@@ -1,9 +1,9 @@
 // solution for ptzcamp 22 winter J2
 
-#include "../lct_subtree"
-#include "../debug"
-#include "../intm"
-#include "../scanner"
+#include "../lct_subtree.hpp"
+#include "../debug.hpp"
+#include "../intm.hpp"
+#include "../scanner.hpp"
 #include <cstddef>
 #include <cstdint>
 // #include "/home/jack/cm/string"
