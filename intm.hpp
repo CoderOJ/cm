@@ -1,7 +1,7 @@
 #ifndef CM_INTM_H
 #define CM_INTM_H
 
-#include "./debug"
+#include "./debug.hpp"
 
 #if __cplusplus >= 201103L
 #include <type_traits>

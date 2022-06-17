@@ -1,7 +1,7 @@
 #ifndef CM_MATH_BASE_H
 #define CM_MATH_BASE_H
 
-#include "./debug"
+#include "./debug.hpp"
 #include <algorithm>
 #include <vector>
 

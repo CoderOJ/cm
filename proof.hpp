@@ -1,7 +1,7 @@
 #ifndef CM_PROOF_H
 #define CM_PROOF_H
 
-#include "./debug"
+#include "./debug.hpp"
 #include <iterator>
 #include <ostream>
 #include <type_traits>
