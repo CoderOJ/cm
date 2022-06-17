@@ -1,5 +1,3 @@
-// relabel off
-
 #ifndef CM_COMPATIBLE_H
 #define CM_COMPATIBLE_H
 
@@ -13,7 +11,9 @@ namespace std
 template <typename _Tp, typename _Up = _Tp>
 inline _Tp exchange(_Tp &__obj, _Up &&__new_val)
 {
-  return __exchange(__obj, std::forward<_Up>(__new_val));
+  _Tp __old_val = std::move(__obj);
+  __obj         = std::forward<_Up>(__new_val);
+  return __old_val;
 }
 
 } // namespace std
