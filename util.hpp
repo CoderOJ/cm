@@ -78,7 +78,7 @@ y_combinate_t<std::decay_t<F>> y_combinate(F &&f)
 } // namespace cm
 #endif
 
-#ifdef CM_DEBUG
+#ifdef CM_CLANGD
 #define CONSTRAINT(n, a, b) constexpr auto n = b;
 #else
 #define CONSTRAINT(n, a, b) constexpr auto n = a;
