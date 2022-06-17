@@ -4,3 +4,4 @@
 !**/*.hpp
 !**/*.py
 !test/*.in
+!temp/*
