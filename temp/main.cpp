@@ -1,8 +1,10 @@
-#include "/home/jack/cm/debug"
-#include "/home/jack/cm/scanner"
-#include "/home/jack/cm/util"
-// #include "/home/jack/cm/intm"
-// #include "/home/jack/cm/string"
+#include "/home/jack/cm/0pch.hpp"
+#include "/home/jack/cm/debug.hpp"
+// #include "/home/jack/cm/intm.hpp"
+#include "/home/jack/cm/scanner.hpp"
+// #include "/home/jack/cm/segment_tree.hpp"
+// #include "/home/jack/cm/string.hpp"
+#include "/home/jack/cm/util.hpp"
 
 cm::scanner<cm::optimal_reader> sc(stdin);
 

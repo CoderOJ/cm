@@ -1,7 +1,9 @@
 *
+!makefile
 !*/
 !**/*.cpp
 !**/*.hpp
 !**/*.py
 !test/*.in
-!temp/*
+!temp/makefile
+!temp/main.cpp
