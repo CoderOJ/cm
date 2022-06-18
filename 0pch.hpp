@@ -21,10 +21,10 @@
 #include <utility>
 #include <vector>
 
-namespace __cm_impl
+namespace impl
 {
 
-void force_templates()
+inline void force_templates()
 {
 #define FORCE(type)                                                            \
   {                                                                            \
@@ -36,9 +36,8 @@ void force_templates()
   FORCE((std::vector<std::pair<int, int>>))
 
 #undef FORCE
-#undef FORCE_T
 }
 
-} // namespace __cm_impl
+} // namespace impl
 
 #endif
