@@ -28,6 +28,19 @@ struct once_t
   }
 };
 
+template <class value_type = int>
+struct counter_t
+{
+private:
+  value_type _value{};
+
+public:
+  value_type operator()()
+  {
+    return _value++;
+  }
+};
+
 namespace impl
 {
 
