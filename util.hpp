@@ -39,6 +39,16 @@ public:
   {
     return _value++;
   }
+
+  value_type size() const
+  {
+    return _value;
+  }
+
+  void clear()
+  {
+    _value = value_type{};
+  }
 };
 
 namespace impl
