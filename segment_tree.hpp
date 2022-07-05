@@ -53,13 +53,13 @@ protected:
     }
   }
 
-  template <class... _Param>
+  template <class... _Param, class... _Arg>
   void _modify(int u, int l, int r, int ml, int mr,
-               void (_NodeType::*_pred)(_Param...), _Param... _param)
+               void (_NodeType::*_pred)(_Param...), _Arg... _arg)
   {
     if (ml <= l && r <= mr)
     {
-      (p[u].*_pred)(_param...);
+      (p[u].*_pred)(_arg...);
     }
     else
     {
@@ -67,9 +67,9 @@ protected:
       if (_NodeType::have_push_down)
         p[u].push_down(p[u + 1], p[u + (_mid - l) * 2]);
       if (ml < _mid)
-        _modify(u + 1, l, _mid, ml, mr, _pred, _param...);
+        _modify(u + 1, l, _mid, ml, mr, _pred, _arg...);
       if (mr > _mid)
-        _modify(u + (_mid - l) * 2, _mid, r, ml, mr, _pred, _param...);
+        _modify(u + (_mid - l) * 2, _mid, r, ml, mr, _pred, _arg...);
       p[u] = _NodeType(p[u + 1], p[u + (_mid - l) * 2]);
     }
   }
@@ -126,9 +126,8 @@ public:
     _init(0, l, r);
   }
 
-  template <class... _Param>
-  void modify(int ml, int mr, void (_NodeType::*_pred)(_Param...),
-              _Param... _param)
+  template <class... _Param, class... _Arg>
+  void modify(int ml, int mr, void (_NodeType::*_pred)(_Param...), _Arg... _arg)
   {
 #ifdef CM_DEBUG_H
     cm_assert(ml >= l, l, r, ml, mr);
@@ -136,7 +135,7 @@ public:
     cm_assert(ml < mr, l, r, ml, mr);
 #endif
     if (ml < mr)
-      _modify(0, l, r, ml, mr, _pred, _param...);
+      _modify(0, l, r, ml, mr, _pred, _arg...);
   }
 
   _NodeType query(int ql, int qr)
