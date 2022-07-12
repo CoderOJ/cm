@@ -1,5 +1,5 @@
-#ifndef CM_MATH_BASE_H
-#define CM_MATH_BASE_H
+#ifndef CM_MATH_UTIL_H
+#define CM_MATH_UTIL_H
 
 #include "./debug.hpp"
 #include <algorithm>
@@ -11,7 +11,9 @@ namespace cm
 template <class _Integer>
 struct math_util
 {
-  static class _fac_t
+
+private:
+  class _fac_t
   {
   private:
     std::vector<_Integer> _fac;
@@ -44,9 +46,9 @@ struct math_util
       require(i);
       return _fac[i];
     }
-  } fac;
+  };
 
-  static class _inv_t
+  class _inv_t
   {
   private:
     std::vector<_Integer> _inv;
@@ -85,9 +87,9 @@ struct math_util
       require(i);
       return _inv[i];
     }
-  } inv;
+  };
 
-  static class _ifac_t
+  class _ifac_t
   {
   private:
     std::vector<_Integer> _ifac;
@@ -114,9 +116,9 @@ struct math_util
       require(i);
       return _ifac[i];
     }
-  } ifac;
+  };
 
-  static class _binom_t
+  class _binom_t
   {
   public:
     void require(int n)
@@ -136,7 +138,13 @@ struct math_util
         return _Integer(0);
       return fac.get(n) * ifac.get(m) * ifac.get(n - m);
     }
-  } binom;
+  };
+
+public:
+  static _inv_t   inv;
+  static _fac_t   fac;
+  static _ifac_t  ifac;
+  static _binom_t binom;
 };
 
 template <class _Integer>
