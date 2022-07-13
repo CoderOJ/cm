@@ -19,7 +19,6 @@ private:
   std::string   _sep          = "\x2c\x20";
   int           _assert_level = 0;
   bool          _assert_exit  = true;
-  int           _exit_code    = 0;
 
   std::string _get_color(const std::string &_name)
   {
@@ -85,11 +84,6 @@ public:
   logger &assert_noexit()
   {
     _assert_exit = false;
-    return *this;
-  }
-  logger &set_exit_code(int _code)
-  {
-    _exit_code = _code;
     return *this;
   }
 
@@ -189,7 +183,7 @@ public:
       if (_info_str != "")
         hint("detail", "magenta").hint(_info_str)(_info...);
       if (_assert_exit)
-        exit(_exit_code);
+        abort();
     }
     return *this;
   }
@@ -222,10 +216,6 @@ public:
     return *this;
   }
   logger &assert_noexit()
-  {
-    return *this;
-  }
-  logger &set_exit_code(int)
   {
     return *this;
   }
