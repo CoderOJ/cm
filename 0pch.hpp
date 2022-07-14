@@ -11,6 +11,7 @@
 #include <deque>
 #include <iostream>
 #include <map>
+#include <numeric>
 #include <queue>
 #include <set>
 #include <stack>
