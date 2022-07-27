@@ -1,6 +1,7 @@
 #ifndef CM_STRING_H
 #define CM_STRING_H
 
+#include <algorithm>
 #include <iterator>
 #include <utility>
 
