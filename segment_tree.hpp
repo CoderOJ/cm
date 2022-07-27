@@ -1,6 +1,7 @@
 #ifndef CM_SEGMENT_TREE
 #define CM_SEGMENT_TREE
 
+#include <iterator>
 #include <vector>
 
 namespace cm
@@ -11,7 +12,6 @@ struct segment_tree_node_base
 {
   static constexpr bool have_push_down = false;
   segment_tree_node_base()             = default;
-  explicit segment_tree_node_base(int) {}
   segment_tree_node_base(const segment_tree_node_base &,
                          const segment_tree_node_base &)
   {
@@ -24,7 +24,6 @@ struct segment_tree_node_base<true>
 {
   static constexpr bool have_push_down = true;
   segment_tree_node_base()             = default;
-  explicit segment_tree_node_base(int) {}
   segment_tree_node_base(const segment_tree_node_base &,
                          const segment_tree_node_base &)
   {
@@ -42,7 +41,7 @@ protected:
   {
     if (r - l == 1)
     {
-      p[u] = _NodeType(l);
+      p[u] = _NodeType();
     }
     else
     {
@@ -53,9 +52,25 @@ protected:
     }
   }
 
-  template <class... _Param, class... _Arg>
+  template <class _Iter>
+  void _init(int u, _Iter l, _Iter r)
+  {
+    if (std::next(l) == r)
+    {
+      p[u] = _NodeType(*l);
+    }
+    else
+    {
+      int _mid = l + std::distance(l, r) / 2;
+      _init(u + 1, l, _mid);
+      _init(u + (_mid - l) * 2, _mid, r);
+      p[u] = _NodeType(p[u + 1], p[u + (_mid - l) * 2]);
+    }
+  }
+
+  template <class _Pres, class... _Param, class... _Arg>
   void _modify(int u, int l, int r, int ml, int mr,
-               void (_NodeType::*_pred)(_Param...), _Arg... _arg)
+               _Pres (_NodeType::*_pred)(_Param...), _Arg... _arg)
   {
     if (ml <= l && r <= mr)
     {
@@ -126,8 +141,16 @@ public:
     _init(0, l, r);
   }
 
-  template <class... _Param, class... _Arg>
-  void modify(int ml, int mr, void (_NodeType::*_pred)(_Param...), _Arg... _arg)
+  template <class _Iter>
+  segment_tree(_Iter _begin, _Iter _end)
+      : l(0), r(std::distance(_begin, _end)), p(r * 2 - 1)
+  {
+    _init(0, _begin, _end);
+  }
+
+  template <class _Pres, class... _Param, class... _Arg>
+  void modify(int ml, int mr, _Pres (_NodeType::*_pred)(_Param...),
+              _Arg... _arg)
   {
 #ifdef CM_DEBUG_H
     cm_assert(ml >= l, l, r, ml, mr);
