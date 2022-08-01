@@ -3,10 +3,57 @@
 
 #include "./debug.hpp"
 #include <algorithm>
+#include <array>
+#include <initializer_list>
 #include <vector>
 
 namespace cm
 {
+
+template <class int_t, int N, int M>
+struct matrix_t : public std::array<std::array<int_t, M>, N>
+{
+  using std::array<std::array<int_t, M>, N>::array;
+
+  template <class T>
+  constexpr matrix_t(std::initializer_list<std::initializer_list<T>> &&a)
+  {
+    auto a_it = a.begin();
+    auto t_it = this->begin();
+    for (; t_it != this->end(); a_it++, t_it++)
+    {
+      auto aa_it = a_it->begin();
+      auto tt_it = t_it->begin();
+      for (; tt_it != t_it->end(); aa_it++, tt_it++)
+        *tt_it = *aa_it;
+    }
+  }
+};
+
+template <class int_t, int N, int M, int K>
+constexpr matrix_t<int_t, N, K> operator*(const matrix_t<int_t, N, M> &lhs,
+                                          const matrix_t<int_t, M, K> &rhs)
+{
+  matrix_t<int_t, N, K> res;
+  for (int i = 0; i < N; i++)
+    std::fill(res[i].begin(), res[i].end(), int_t());
+  for (int i = 0; i < N; i++)
+    for (int k = 0; k < M; k++)
+      for (int j = 0; j < K; j++)
+        res[i][j] += lhs[i][k] * rhs[k][j];
+  return res;
+}
+
+template <class int_t, int N, int M>
+constexpr matrix_t<int_t, N, M> operator+(const matrix_t<int_t, N, M> &lhs,
+                                          const matrix_t<int_t, N, M> &rhs)
+{
+  matrix_t<int_t, N, M> res;
+  for (int i = 0; i < N; i++)
+    for (int j = 0; j < M; j++)
+      res[i][j] = lhs[i][j] + rhs[i][j];
+  return res;
+}
 
 template <class _Integer>
 struct math_util
