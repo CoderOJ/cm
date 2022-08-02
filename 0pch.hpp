@@ -24,6 +24,8 @@
 #include <utility>
 #include <vector>
 
+#ifdef CM_DEBUG
+
 namespace impl
 {
 
@@ -42,5 +44,7 @@ inline void force_templates()
 }
 
 } // namespace impl
+
+#endif
 
 #endif
