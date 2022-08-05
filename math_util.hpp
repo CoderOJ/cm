@@ -2,6 +2,7 @@
 #define CM_MATH_UTIL_H
 
 #include "./debug.hpp"
+#include "./predef.hpp"
 #include <algorithm>
 #include <array>
 #include <initializer_list>
@@ -16,7 +17,7 @@ struct matrix_t : public std::array<std::array<int_t, M>, N>
   using std::array<std::array<int_t, M>, N>::array;
 
   template <class T>
-  constexpr matrix_t(std::initializer_list<std::initializer_list<T>> &&a)
+  CXX14_CONSTEXPR matrix_t(std::initializer_list<std::initializer_list<T>> &&a)
   {
     auto a_it = a.begin();
     auto t_it = this->begin();
@@ -31,8 +32,8 @@ struct matrix_t : public std::array<std::array<int_t, M>, N>
 };
 
 template <class int_t, int N, int M, int K>
-constexpr matrix_t<int_t, N, K> operator*(const matrix_t<int_t, N, M> &lhs,
-                                          const matrix_t<int_t, M, K> &rhs)
+CXX14_CONSTEXPR matrix_t<int_t, N, K> operator*(
+    const matrix_t<int_t, N, M> &lhs, const matrix_t<int_t, M, K> &rhs)
 {
   matrix_t<int_t, N, K> res;
   for (int i = 0; i < N; i++)
@@ -45,8 +46,8 @@ constexpr matrix_t<int_t, N, K> operator*(const matrix_t<int_t, N, M> &lhs,
 }
 
 template <class int_t, int N, int M>
-constexpr matrix_t<int_t, N, M> operator+(const matrix_t<int_t, N, M> &lhs,
-                                          const matrix_t<int_t, N, M> &rhs)
+CXX14_CONSTEXPR matrix_t<int_t, N, M> operator+(
+    const matrix_t<int_t, N, M> &lhs, const matrix_t<int_t, N, M> &rhs)
 {
   matrix_t<int_t, N, M> res;
   for (int i = 0; i < N; i++)
@@ -99,7 +100,7 @@ private:
   {
   private:
     std::vector<_Integer> _inv;
-    static constexpr int  MOD = _Integer::MOD;
+    static const int      MOD = _Integer::MOD;
 
   public:
     void require(int n)

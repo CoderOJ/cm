@@ -2,6 +2,7 @@
 #define CM_INTM_H
 
 #include "./debug.hpp"
+#include "./predef.hpp"
 
 #if __cplusplus >= 201103L
 #include <type_traits>
@@ -15,22 +16,6 @@
 #endif
 #ifndef INTM_FAST_64
 #define INTM_FAST_64 unsigned long long
-#endif
-
-#define _ATTR_INLINE __attribute__((always_inline)) inline
-
-#if __cplusplus >= 201103L
-#define _CXX11_CONSTEXPR constexpr
-#define CXX11_EXPLICIT explicit
-#else
-#define _CXX11_CONSTEXPR
-#define CXX11_EXPLICIT
-#endif
-
-#if __cplusplus >= 201402L
-#define _CXX14_CONSTEXPR constexpr
-#else
-#define _CXX14_CONSTEXPR
 #endif
 
 namespace cm
@@ -49,21 +34,21 @@ public:
 
 protected:
   INTM_FAST_32 a = 0;
-  _ATTR_INLINE _CXX11_CONSTEXPR explicit intm(INTM_FAST_32 a, int) : a(a) {}
+  ATTR_INLINE  CXX11_CONSTEXPR explicit intm(INTM_FAST_32 a, int) : a(a) {}
 
-  static _ATTR_INLINE _CXX11_CONSTEXPR INTM_FAST_32 __impl_inc(INTM_FAST_32 a)
+  static ATTR_INLINE CXX11_CONSTEXPR INTM_FAST_32 __impl_inc(INTM_FAST_32 a)
   {
     return a < 0 ? a + MOD : a;
   }
 
-  static _ATTR_INLINE _CXX11_CONSTEXPR INTM_FAST_32 __impl_dec(INTM_FAST_32 a)
+  static ATTR_INLINE CXX11_CONSTEXPR INTM_FAST_32 __impl_dec(INTM_FAST_32 a)
   {
     return a >= MOD ? a - MOD : a;
   }
 
   template <class IntType>
-  static _ATTR_INLINE _CXX14_CONSTEXPR INTM_FAST_32 __impl_pow(INTM_FAST_32 a,
-                                                               IntType      b)
+  static ATTR_INLINE CXX14_CONSTEXPR INTM_FAST_32 __impl_pow(INTM_FAST_32 a,
+                                                             IntType      b)
   {
     INTM_FAST_32 res = 1;
     for (; b; b >>= 1)
@@ -91,27 +76,26 @@ public:
   intm() {}
 #endif
 
-  static _CXX11_CONSTEXPR intm raw(INTM_FAST_32 x)
+  static CXX11_CONSTEXPR intm raw(INTM_FAST_32 x)
   {
     return intm(x, 0);
   }
 
   // clang-format off
-  _ATTR_INLINE _CXX11_CONSTEXPR intm(int a)                : a(static_cast<INTM_FAST_32>(__impl_inc(a % MOD))) {}
-  _ATTR_INLINE _CXX11_CONSTEXPR intm(long a)               : a(static_cast<INTM_FAST_32>(__impl_inc(a % MOD))) {}
-  _ATTR_INLINE _CXX11_CONSTEXPR intm(long long a)          : a(static_cast<INTM_FAST_32>(__impl_inc(a % MOD))) {}
-  _ATTR_INLINE _CXX11_CONSTEXPR intm(unsigned int a)       : a(static_cast<INTM_FAST_32>(a % MOD))             {}
-  _ATTR_INLINE _CXX11_CONSTEXPR intm(unsigned long a)      : a(static_cast<INTM_FAST_32>(a % MOD))             {}
-  _ATTR_INLINE _CXX11_CONSTEXPR intm(unsigned long long a) : a(static_cast<INTM_FAST_32>(a % MOD))             {}
+  ATTR_INLINE CXX11_CONSTEXPR intm(int a)                : a(static_cast<INTM_FAST_32>(__impl_inc(a % MOD))) {}
+  ATTR_INLINE CXX11_CONSTEXPR intm(long a)               : a(static_cast<INTM_FAST_32>(__impl_inc(a % MOD))) {}
+  ATTR_INLINE CXX11_CONSTEXPR intm(long long a)          : a(static_cast<INTM_FAST_32>(__impl_inc(a % MOD))) {}
+  ATTR_INLINE CXX11_CONSTEXPR intm(unsigned int a)       : a(static_cast<INTM_FAST_32>(a % MOD))             {}
+  ATTR_INLINE CXX11_CONSTEXPR intm(unsigned long a)      : a(static_cast<INTM_FAST_32>(a % MOD))             {}
+  ATTR_INLINE CXX11_CONSTEXPR intm(unsigned long long a) : a(static_cast<INTM_FAST_32>(a % MOD))             {}
   // clang-format on
 
   template <class _IntType>
-  _ATTR_INLINE _CXX11_CONSTEXPR CXX11_EXPLICIT operator _IntType() const
+  ATTR_INLINE CXX11_CONSTEXPR CXX11_EXPLICIT operator _IntType() const
   {
     return a;
   }
-  _ATTR_INLINE friend std::ostream &operator<<(std::ostream &out,
-                                               const intm    rhs)
+  ATTR_INLINE friend std::ostream &operator<<(std::ostream &out, const intm rhs)
   {
 #ifdef CM_DEBUG
     out << pretty(rhs.a);
@@ -121,7 +105,7 @@ public:
     return out;
 #endif
   }
-  _ATTR_INLINE friend std::istream &operator>>(std::istream &in, intm &rhs)
+  ATTR_INLINE friend std::istream &operator>>(std::istream &in, intm &rhs)
   {
     long long a;
     in >> a;
@@ -130,70 +114,70 @@ public:
   }
 
   template <class _IntType>
-  _ATTR_INLINE _CXX14_CONSTEXPR intm pow(_IntType k) const
+  ATTR_INLINE CXX14_CONSTEXPR intm pow(_IntType k) const
   {
     return raw(__impl_pow(a, k));
   }
-  _ATTR_INLINE _CXX14_CONSTEXPR intm inv() const
+  ATTR_INLINE CXX14_CONSTEXPR intm inv() const
   {
     cm_assert(a != 0, "warning: 0 do not have inv");
     return raw(__impl_pow(a, MOD - 2));
   }
 
   // clang-format off
-  _ATTR_INLINE _CXX11_CONSTEXPR friend bool operator<  (const intm a, const intm b) { return a.a <  b.a; }
-  _ATTR_INLINE _CXX11_CONSTEXPR friend bool operator<= (const intm a, const intm b) { return a.a <= b.a; }
-  _ATTR_INLINE _CXX11_CONSTEXPR friend bool operator>  (const intm a, const intm b) { return a.a >  b.a; }
-  _ATTR_INLINE _CXX11_CONSTEXPR friend bool operator>= (const intm a, const intm b) { return a.a >= b.a; }
-  _ATTR_INLINE _CXX11_CONSTEXPR friend bool operator== (const intm a, const intm b) { return a.a == b.a; }
-  _ATTR_INLINE _CXX11_CONSTEXPR friend bool operator!= (const intm a, const intm b) { return a.a != b.a; }
+  ATTR_INLINE CXX11_CONSTEXPR friend bool operator<  (const intm a, const intm b) { return a.a <  b.a; }
+  ATTR_INLINE CXX11_CONSTEXPR friend bool operator<= (const intm a, const intm b) { return a.a <= b.a; }
+  ATTR_INLINE CXX11_CONSTEXPR friend bool operator>  (const intm a, const intm b) { return a.a >  b.a; }
+  ATTR_INLINE CXX11_CONSTEXPR friend bool operator>= (const intm a, const intm b) { return a.a >= b.a; }
+  ATTR_INLINE CXX11_CONSTEXPR friend bool operator== (const intm a, const intm b) { return a.a == b.a; }
+  ATTR_INLINE CXX11_CONSTEXPR friend bool operator!= (const intm a, const intm b) { return a.a != b.a; }
 
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend bool operator<  (const _IntType a, const intm b) { return a   <  b.a; }
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend bool operator<  (const intm a, const _IntType b) { return a.a <  b;   }
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend bool operator<= (const _IntType a, const intm b) { return a   <= b.a; }
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend bool operator<= (const intm a, const _IntType b) { return a.a <= b;   }
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend bool operator>  (const _IntType a, const intm b) { return a   >  b.a; }
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend bool operator>  (const intm a, const _IntType b) { return a.a >  b;   }
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend bool operator>= (const _IntType a, const intm b) { return a   >= b.a; }
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend bool operator>= (const intm a, const _IntType b) { return a.a >= b;   }
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend bool operator== (const _IntType a, const intm b) { return a   == b.a; }
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend bool operator== (const intm a, const _IntType b) { return a.a == b;   }
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend bool operator!= (const _IntType a, const intm b) { return a   != b.a; }
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend bool operator!= (const intm a, const _IntType b) { return a.a != b;   }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend bool operator<  (const _IntType a, const intm b) { return a   <  b.a; }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend bool operator<  (const intm a, const _IntType b) { return a.a <  b;   }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend bool operator<= (const _IntType a, const intm b) { return a   <= b.a; }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend bool operator<= (const intm a, const _IntType b) { return a.a <= b;   }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend bool operator>  (const _IntType a, const intm b) { return a   >  b.a; }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend bool operator>  (const intm a, const _IntType b) { return a.a >  b;   }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend bool operator>= (const _IntType a, const intm b) { return a   >= b.a; }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend bool operator>= (const intm a, const _IntType b) { return a.a >= b;   }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend bool operator== (const _IntType a, const intm b) { return a   == b.a; }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend bool operator== (const intm a, const _IntType b) { return a.a == b;   }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend bool operator!= (const _IntType a, const intm b) { return a   != b.a; }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend bool operator!= (const intm a, const _IntType b) { return a.a != b;   }
 
-  _ATTR_INLINE _CXX11_CONSTEXPR friend intm  operator+  (const intm  a, const intm b) { return raw(__impl_dec(a.a + b.a)); }
-  _ATTR_INLINE _CXX11_CONSTEXPR friend intm  operator-  (const intm  a, const intm b) { return raw(__impl_inc(a.a - b.a)); }
-  _ATTR_INLINE _CXX11_CONSTEXPR friend intm  operator*  (const intm  a, const intm b) { return raw(static_cast<INTM_FAST_32>((INTM_FAST_64)(a.a) * (INTM_FAST_64)(b.a) % MOD)); }
-  _ATTR_INLINE _CXX14_CONSTEXPR friend intm  operator/  (const intm  a, const intm b) { return a * b.inv(); }
-  _ATTR_INLINE _CXX11_CONSTEXPR friend intm& operator+= (      intm &a, const intm b) { return a = a + b;  }
-  _ATTR_INLINE _CXX11_CONSTEXPR friend intm& operator-= (      intm &a, const intm b) { return a = a - b;  }
-  _ATTR_INLINE _CXX11_CONSTEXPR friend intm& operator*= (      intm &a, const intm b) { return a = a * b;  }
-  _ATTR_INLINE _CXX14_CONSTEXPR friend intm& operator/= (      intm &a, const intm b) { return a = a / b;  }
+  ATTR_INLINE CXX11_CONSTEXPR friend intm  operator+  (const intm  a, const intm b) { return raw(__impl_dec(a.a + b.a)); }
+  ATTR_INLINE CXX11_CONSTEXPR friend intm  operator-  (const intm  a, const intm b) { return raw(__impl_inc(a.a - b.a)); }
+  ATTR_INLINE CXX11_CONSTEXPR friend intm  operator*  (const intm  a, const intm b) { return raw(static_cast<INTM_FAST_32>((INTM_FAST_64)(a.a) * (INTM_FAST_64)(b.a) % MOD)); }
+  ATTR_INLINE CXX14_CONSTEXPR friend intm  operator/  (const intm  a, const intm b) { return a * b.inv(); }
+  ATTR_INLINE CXX11_CONSTEXPR friend intm& operator+= (      intm &a, const intm b) { return a = a + b;  }
+  ATTR_INLINE CXX11_CONSTEXPR friend intm& operator-= (      intm &a, const intm b) { return a = a - b;  }
+  ATTR_INLINE CXX11_CONSTEXPR friend intm& operator*= (      intm &a, const intm b) { return a = a * b;  }
+  ATTR_INLINE CXX14_CONSTEXPR friend intm& operator/= (      intm &a, const intm b) { return a = a / b;  }
 
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend intm  operator+  (const intm  a, const _IntType b) { return a +  intm(b); }
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend intm  operator-  (const intm  a, const _IntType b) { return a -  intm(b); }
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend intm  operator*  (const intm  a, const _IntType b) { return a *  intm(b); }
-  template <class _IntType> _ATTR_INLINE _CXX14_CONSTEXPR friend intm  operator/  (const intm  a, const _IntType b) { return a /  intm(b); }
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend intm& operator+= (      intm &a, const _IntType b) { return a += intm(b); }
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend intm& operator-= (      intm &a, const _IntType b) { return a -= intm(b); }
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend intm& operator*= (      intm &a, const _IntType b) { return a *= intm(b); }
-  template <class _IntType> _ATTR_INLINE _CXX14_CONSTEXPR friend intm& operator/= (      intm &a, const _IntType b) { return a /= intm(b); }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend intm  operator+  (const intm  a, const _IntType b) { return a +  intm(b); }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend intm  operator-  (const intm  a, const _IntType b) { return a -  intm(b); }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend intm  operator*  (const intm  a, const _IntType b) { return a *  intm(b); }
+  template <class _IntType> ATTR_INLINE CXX14_CONSTEXPR friend intm  operator/  (const intm  a, const _IntType b) { return a /  intm(b); }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend intm& operator+= (      intm &a, const _IntType b) { return a += intm(b); }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend intm& operator-= (      intm &a, const _IntType b) { return a -= intm(b); }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend intm& operator*= (      intm &a, const _IntType b) { return a *= intm(b); }
+  template <class _IntType> ATTR_INLINE CXX14_CONSTEXPR friend intm& operator/= (      intm &a, const _IntType b) { return a /= intm(b); }
 
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend intm      operator+  (const _IntType  a, const intm b) { return intm(a) +  b; }
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend intm      operator-  (const _IntType  a, const intm b) { return intm(a) -  b; }
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend intm      operator*  (const _IntType  a, const intm b) { return intm(a) *  b; }
-  template <class _IntType> _ATTR_INLINE _CXX14_CONSTEXPR friend intm      operator/  (const _IntType  a, const intm b) { return intm(a) /  b; }
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend _IntType& operator+= (      _IntType &a, const intm b) { return a += _IntType(b); }
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend _IntType& operator-= (      _IntType &a, const intm b) { return a -= _IntType(b); }
-  template <class _IntType> _ATTR_INLINE _CXX11_CONSTEXPR friend _IntType& operator*= (      _IntType &a, const intm b) { return a *= _IntType(b); }
-  template <class _IntType> _ATTR_INLINE _CXX14_CONSTEXPR friend _IntType& operator/= (      _IntType &a, const intm b) { return a /= _IntType(b); }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend intm      operator+  (const _IntType  a, const intm b) { return intm(a) +  b; }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend intm      operator-  (const _IntType  a, const intm b) { return intm(a) -  b; }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend intm      operator*  (const _IntType  a, const intm b) { return intm(a) *  b; }
+  template <class _IntType> ATTR_INLINE CXX14_CONSTEXPR friend intm      operator/  (const _IntType  a, const intm b) { return intm(a) /  b; }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend _IntType& operator+= (      _IntType &a, const intm b) { return a += _IntType(b); }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend _IntType& operator-= (      _IntType &a, const intm b) { return a -= _IntType(b); }
+  template <class _IntType> ATTR_INLINE CXX11_CONSTEXPR friend _IntType& operator*= (      _IntType &a, const intm b) { return a *= _IntType(b); }
+  template <class _IntType> ATTR_INLINE CXX14_CONSTEXPR friend _IntType& operator/= (      _IntType &a, const intm b) { return a /= _IntType(b); }
   // clang-format on
 };
 
 } // namespace cm
 
-#undef _ATTR_INLINE
-#undef _CXX11_CONSTEXPR
+#undef ATTR_INLINE
+#undef CXX11_CONSTEXPR
 #undef _CXX14_CONSTEXPR
 #undef INTM_FAST_32
 #undef INTM_FAST_64
