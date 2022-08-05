@@ -176,9 +176,6 @@ public:
 
 } // namespace cm
 
-#undef ATTR_INLINE
-#undef CXX11_CONSTEXPR
-#undef _CXX14_CONSTEXPR
 #undef INTM_FAST_32
 #undef INTM_FAST_64
 
