@@ -2,6 +2,7 @@
 #define CM_STRING_H
 
 #include <algorithm>
+#include <cstdint>
 #include <iterator>
 #include <utility>
 
