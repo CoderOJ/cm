@@ -49,7 +49,7 @@ def parse_file(filename):
                     parse_file(header_name)
             elif sline.startswith('#define '):
                 if p:
-                    ls = re.split("\s+", sline, 2)
+                    ls = re.split("\\s+", sline, maxsplit=2)
                     if len(ls) < 3:
                         ls.append("1")
                     _, name, cont = ls
@@ -60,13 +60,13 @@ def parse_file(filename):
                         add_line(line)
             elif sline.startswith('#undef '):
                 if p:
-                    _, name = re.split("\s+", sline, 1)
+                    _, name = re.split("\\s+", sline, maxsplit=1)
                     del macro_list[name]
                     if not is_cm_header_macro(name):
                         add_line(line)
             elif sline.startswith('#ifdef '):
                 if p:
-                    _, name = re.split("\s+", sline, 1)
+                    _, name = re.split("\\s+", sline, maxsplit=1)
                     cond = name in macro_list
                     e = parse_to_endif(lines, cond)
                     if e  == "#else":
@@ -77,7 +77,7 @@ def parse_file(filename):
                         parse_to_endif(lines, False)
             elif sline.startswith('#ifndef '):
                 if p:
-                    _, name = re.split("\s+", sline, 1)
+                    _, name = re.split("\\s+", sline, maxsplit=1)
                     cond = name in macro_list
                     e = parse_to_endif(lines, not cond)
                     if e  == "#else":
